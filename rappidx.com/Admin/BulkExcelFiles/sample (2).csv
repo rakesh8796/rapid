@@ -1,0 +1,7 @@
+Customer Name,Address,Mobile,Pincode,orderid,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Waight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city
+Saurabh,Varanasi,7676767788,400066,1,Laptop,10,10,21,22,3450,0,Delhi,Chandani Chauk,,300,100,14,pickup name,9876543210,110006,1567GS,address 1,state 21,city 32
+Anish,Machodari,9787878788,400067,2,Mobile,11,11,20,23,887,0,Delhi,Chandani Chauk,,400,110,,12,9876543210,110006,1567GS,address 1,state 21,city 32
+Anupam,Ravindrapuri,6767668768,400068,3,Laptop,12,12,19,24,232,0,Delhi,Chandani Chauk,,500,120,500,pickup name,9876543210,110006,1567GS,address 1,state 21,city 32
+Anil,Lanka,5656566767,400091,4,Mobile,13,13,18,25,424,0,Delhi,Chandani Chauk,,300,130,25,pickup name,9876543210,110006,1567GS,address 1,state 21,city 32
+Anshu,BHU,7567566788,400092,5,Key,14,14,17,26,4343,0,Delhi,Chandani Chauk,,300,140,0,pickup name,9876543210,110006,1567GS,address 1,state 21,city 32
+Kumar,Cant,7676767899,400101,6,Nav,15,15,16,27,2322,0,Delhi,Chandani Chauk,,300,150,8,pickup name,9876543210,110006,1567GS,address 1,state 21,city 32

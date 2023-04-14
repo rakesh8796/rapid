@@ -1,0 +1,6 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Anil Kumar Dhaka,"550/5-25, Saraswati Vihar, Phese-2, Rahata Road, P.O- Ghanta ghar, Meerut",8077107778,250002,RPDXRAK001,Rakhi,1,12,10,8,999,0,Uttar Pradesh,Meerut,,0.2,999,579,,,,,,,,Prepaid
+Apurv Dhaka,"C-7, Dwarikesh Puram, Dwarikesh Sugar Ind Ltd, Afzalgarh, Distt Bijnor",7500462357,246722,RPDXRAK002,Rakhi,1,12,10,8,999,0,Uttar Pradesh,Bijnor,,0.2,999,579,,,,,,,,Prepaid
+Tushar Dhaka,"Flat D-1204, Mantri Celestia Apartments, Financial District, Nanakaramguda, Hyderabad",9044472377,500032,RPDXRAK003,Rakhi,1,12,10,8,999,0,Hyderabad,Nanakaramguda,,0.2,999,579,,,,,,,,Prepaid
+Himanshu Dhaka,"B505, Lake Florence, Lake Homes, Powai, Mumbai",9560497973,400076,RPDXRAK004,Rakhi,1,12,10,8,999,0,Maharashtra,Mumbai,,0.2,999,579,,,,,,,,Prepaid
+Seema Dhaka,"26, Sai Vatika, Phase 1, Near Rusa Hospital, Sasni Gate Chauraha, Agra Road",9258948909,202001,RPDXRAK005,Rakhi,1,12,10,8,999,0,Uttar Pradesh,Aligarh,,0.2,999,579,,,,,,,,Prepaid

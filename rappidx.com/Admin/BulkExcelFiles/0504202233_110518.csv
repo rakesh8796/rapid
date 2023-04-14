@@ -1,0 +1,6 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Mridupawan Rajkonwar,"H.NO 212, Ushapur, Near Play ground",6900604055,785670,#4294,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AS,Moranhat Town,,0.205,0,4144,,,,,,,,COD
+Samalpal Pal,"Chowk Bazaar, Near Govt. Hospital, Chandil, Jharkand",6200795029,832401,#4295,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,JH,Chandil,,0.205,0,4144,,,,,,,,COD
+Ali Mohd Mir,"Vill. Muqam E Shahwali, Matipura, Near Noor Masjid, Jammu",9541503834,193222,#4296,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,JK,Kupwara,,0.205,0,4144,,,,,,,,COD
+Khriesavilie Belho ,"H.No 670, Half Nagarjan, Kuda Village, Near Lane 3,  Dimapur.",8974121911,797112,#4301,Luminated Car Stripe Light (All cars),1,10,8.5,7,1049,1049,NL,Dimapur,,0.205,0,4144,,,,,,,,COD
+Riyaz  ,"City walk footwear, SS Complex, Velur Main Road, Mohanur",7868009376,637015,#4302,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,TN,Namakal ,,0.205,0,4144,,,,,,,,COD

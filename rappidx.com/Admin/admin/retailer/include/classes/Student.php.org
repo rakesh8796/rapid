@@ -1,0 +1,2028 @@
+<?php class Student {
+    
+    /*****************************************************************************
+    *****************************ADD STUDENT**********************************
+    *****************************************************************************/
+
+    function addStudent(){
+    	if(isset($_POST["submit"])){
+    		include('config/dbconnection.php');
+            $Branch = trim($_POST['Branch']);
+    		$registrationno = trim($_POST['registrationno']);
+            $formno = trim($_POST['formno']);
+            $studentname = trim($_POST['studentname']);
+            $astartyear = trim($_POST['astartyear']);
+            $mothername = trim($_POST['mothername']);
+            $fatherame = trim($_POST['fatherame']);
+            $dob1 = trim($_POST['dob']);
+            $dob = date("Y-m-d", strtotime($dob1));
+            $aadhar = trim($_POST['aadhar']);
+            $category = trim($_POST['category']);
+            $homeaddress = trim($_POST['homeaddress']);
+            $localaddress = trim($_POST['localaddress']);
+            $gender = trim($_POST['gender']);
+            $studentmobile = trim($_POST['studentmobile']);
+            $studentemail = trim($_POST['studentemail']);
+            $fathermobile = trim($_POST['fathermobile']);
+
+            $class = trim($_POST['class']);
+            $boarduniversity = trim($_POST['boarduniversity']);
+            $year = trim($_POST['year']);
+            $markperc = trim($_POST['markperc']);
+            $subject = trim($_POST['subject']);
+            $schoolname = trim($_POST['schoolname']);
+
+            $medium = trim($_POST['medium']);
+            $board = trim($_POST['board']);
+            $group = trim($_POST['group']);
+            
+            $datejoin = $_POST['joindate'];
+            $joindate = date("Y-m-d", strtotime($datejoin));
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+
+            $imgFile = trim($_FILES['uploadimage']['name']);
+            $tmp_dir = trim($_FILES['uploadimage']['tmp_name']);
+            $imgSize = trim($_FILES['uploadimage']['size']);
+
+            if(empty($imgFile)){
+               $errMSG = "Please Select Image File.";
+              }
+              else
+              {
+               $upload_dir = 'upload/'; // upload directory
+             
+               $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
+              
+               // valid image extensions
+               $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+              
+               // rename uploading image
+               $userpic = $imgFile;
+                
+               // allow valid image file formats
+               if(in_array($imgExt, $valid_extensions)){   
+                // Check file size '5MB'
+                if($imgSize < 5000000)    {
+                 move_uploaded_file($tmp_dir,$upload_dir.$userpic);
+                }
+                else{
+                 $errMSG = "Sorry, your file is too large.";
+                }
+               }
+               else{
+                $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";  
+               }
+              }
+
+    		try {
+
+    			$dbservice = $db->query("SELECT * FROM asitfa_student WHERE Redg_No = '$registrationno'");
+    			$getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+    			if($getservice>0)
+	            {
+	                echo "<script>alert('Sorry, Regd Number is already exist')</script>";
+	            }
+	            else{
+	    			$sql = "INSERT INTO asitfa_student ( Branch_Id, Redg_No, Form_No, Class_Id, Aadhar_No, Student_Name, Mother_Name, Father_Name, Dob, Gender_Id, Category_Id,  Mobile_No, Email_Id, Guardian_No, Address, Local_Address, Board_University, Year, Percent_Mark,  Subjects, School_Name, Medium, Board, Subject_Group, Joining_Date, Image, Academic_Id, Rec_Time_Stamp) VALUES (:a,:b,:c,:d,:e,:f,:g,:h,:i,:j,:k,:l,:m,:n,:o,:p,:q,:r,:s,:t,:u,:v,:w,:x,:y,:z,:aa,:ab)";
+	    			$aa = $db->prepare($sql);
+	    			$insertservice = $aa->execute(array(':a'=>$Branch,':b'=>$registrationno,':c'=>$formno,':d'=>$class,':e'=>$aadhar,':f'=>$studentname,':g'=>$mothername,':h'=>$fatherame,':i'=>$dob,':j'=>$gender,':k'=>$category,':l'=>$studentmobile,':m'=>$studentemail,':n'=>$fathermobile,':o'=>$homeaddress,':p'=>$localaddress,':q'=>$boarduniversity, ':r'=>$year, ':s'=>$markperc, ':t'=>$subject, ':u'=>$schoolname, ':v'=>$medium, ':w'=>$board, ':x'=>$group, ':y'=>$joindate, ':z'=>$imgFile, ':aa'=>$astartyear, ':ab'=>$RecTimeStamp,));
+
+					if ($insertservice) {
+						echo "<script type= 'text/javascript'>alert('Student Inserted Successfully');</script>";
+					}
+					else{
+						echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+					}
+
+					$db = null;
+				}
+			}
+			catch(PDOException $ee)
+			{
+				echo $ee->getMessage();
+			}
+    	}
+    }
+
+    //FETCH SERVICES FROM DATABASE
+
+    function viewStudent(){
+    	include('config/dbconnection.php');
+
+        //using mysql to find out total records
+      
+         
+       try {
+
+    // Find out how many items are in the table
+    $total = $db->query('
+        SELECT
+            COUNT(*)
+        FROM
+            asitfa_student
+    ')->fetchColumn();
+
+    // How many items to list per page
+    $limit = 10;
+
+    // How many pages will there be
+    $pages = ceil($total / $limit);
+
+    // What page are we currently on?
+    $page = min($pages, filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, array(
+        'options' => array(
+            'default'   => 1,
+            'min_range' => 1,
+        ),
+    )));
+
+    // Calculate the offset for the query
+    $offset = ($page - 1)  * $limit;
+
+    // Some information to display to the user
+    $start = $offset + 1;
+    $end = min(($offset + $limit), $total);
+
+    // The "back" link
+    $prevlink = ($page > 1) ? '<a href="?page=1" title="First page">&laquo;</a> <a href="?page=' . ($page - 1) . '" title="Previous page">&lsaquo;</a>' : '<span class="disabled">&laquo;</span> <span class="disabled">&lsaquo;</span>';
+
+    // The "forward" link
+    $nextlink = ($page < $pages) ? '<a href="?page=' . ($page + 1) . '" title="Next page">&rsaquo;</a> <a href="?page=' . $pages . '" title="Last page">&raquo;</a>' : '<span class="disabled">&rsaquo;</span> <span class="disabled">&raquo;</span>';
+
+    // Display the paging information
+    echo '<div id="paging"><p>', $prevlink, ' Page ', $page, ' of ', $pages, ' pages, displaying ', $start, '-', $end, ' of ', $total, ' results ', $nextlink, ' </p></div>';
+
+    // Prepare the paged query
+    $stmt = $db->prepare('
+        SELECT
+            *
+        FROM
+            asitfa_student
+        ORDER BY
+            Student_Name
+        LIMIT
+            :limit
+        OFFSET
+            :offset
+    ');
+
+       
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $output = '';
+        if(isset($_POST["query"]))
+        {
+         $search = mysqli_real_escape_string($connect, $_POST["query"]);
+         $query = "
+          SELECT * FROM asitfa_student 
+          WHERE Student_Name LIKE '%".$search."%'
+          OR Redg_No LIKE '%".$search."%' 
+          OR Father_Name LIKE '%".$search."%' 
+          OR Class_Id LIKE '%".$search."%' 
+          OR Mobile_No LIKE '%".$search."%'
+         ";
+        }
+        else
+        {
+         $query = "
+          SELECT * FROM asitfa_student ORDER BY Student_Id
+         ";
+        }
+
+    	$result = $db->prepare("SELECT * FROM asitfa_student ORDER BY Joining_Date  DESC");
+		$result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+            for($i=0; $rowClass = $resultClass->fetch(); $i++){
+                if ($stmt->rowCount() > 0) {
+        // Define how we want to fetch the results
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $iterator = new IteratorIterator($stmt);
+
+                // Display the results
+                
+
+            
+                        
+                   
+                   foreach ($iterator as $row) {
+                     ?>
+        			<tr class="record">
+        			    <td><?php echo $row['Student_Id']; ?></td>
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $rowClass['Class_Name']; ?></td>
+                        <td><img src="upload/<?php echo $row['Image']; ?>" class="img-rounded" width="50px" height="50px" /></td>
+                        <td>
+                            <a href="viewStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="View" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+        					<a href="editStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+        					<button class="btn btn-danger btn-sm" data-toggle="modal" title="Delete" data-target="#DeleteModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                          	<?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addFee.php?studentid=<?php echo $row['Student_Id']; ?>"  title="Add Fee" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            <a href="generateIdCard.php?studentid=<?php echo $row['Student_Id']; ?>" title="Id Card" class="btn btn-default btn-sm">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                             <a href="resultStudent.php?studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $row['Class_Id']; ?>" title="Result" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="selectExam.php?academic=<?php echo $row['Academic_Id']; ?>&studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $row['Class_Id']; ?>" title="Exam" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                      	</td>
+        			</tr>
+        			<div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>"  role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+		        <?php
+                }
+            }
+        }
+    
+    }
+}
+
+       catch (Exception $e) {
+    echo '<p>', $e->getMessage(), '</p>';
+}
+        
+	}
+        function viewStudentBirthday(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student ORDER BY Dob  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+            for($i=0; $rowClass = $resultClass->fetch(); $i++){
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Student_Id']; ?></td>
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $rowClass['Class_Name']; ?></td>
+                        <td><img src="upload/<?php echo $row['Image']; ?>" class="img-rounded" width="50px" height="50px" /></td>
+                        <td>
+                           <?php echo $row['Dob']; ?>
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>"  role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                       
+
+                    </div>
+                <?php
+                }
+        
+        }
+    }
+
+
+
+
+    function viewResultStudent($class,$astartyear){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student WHERE Class_Id = $class and Academic_Id = $astartyear");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+            for($i=0; $rowClass = $resultClass->fetch(); $i++){
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Student_Id']; ?></td>
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $rowClass['Class_Name']; ?></td>
+                        <td><img src="upload/<?php echo $row['Image']; ?>" class="img-rounded" width="50px" height="50px" /></td>
+                        <td>
+                            <a href="viewStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="View" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="editStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addFee.php?studentid=<?php echo $row['Student_Id']; ?>"  title="Add Fee" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            <a href="generateIdCard.php?studentid=<?php echo $row['Student_Id']; ?>" title="Id Card" class="btn btn-default btn-sm">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                             <a href="resultStudent.php?studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $row['Class_Id']; ?>" title="Add Result" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                           <!--  <a href="viewResult.php?studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $row['Class_Id']; ?>" title="View Result" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a> -->
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+                }
+        
+        }
+    }
+
+    function ViewResultStudent2($class,$astartyear){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student WHERE Class_Id = $class and Academic_Id = $astartyear");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+            for($i=0; $rowClass = $resultClass->fetch(); $i++){
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Student_Id']; ?></td>
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $rowClass['Class_Name']; ?></td>
+                        <td><img src="upload/<?php echo $row['Image']; ?>" class="img-rounded" width="50px" height="50px" /></td>
+                        <td> 
+                            <a href="selectExam2.php?studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $row['Class_Id']; ?>&academicid=<?php echo $row['Academic_Id']; ?>" title="Result" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                   
+                   <?php
+                                            }
+                                       
+                              
+                
+                }
+        
+        }
+   
+
+
+
+    function viewResult($astartyear,$classid,$examid,$studentid){
+        include('config/dbconnection.php');
+
+        $result = $db->prepare("SELECT * FROM asitfa_student aas, asitfa_result aar WHERE aas.Student_Id = aar.Student_Id AND aas.Academic_Id = '$astartyear' AND aas.Class_Id = '$classid' AND aar.Exam_Id = '$examid' AND aar.Student_Id= $studentid  GROUP BY aar.Subject_Id");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $subjectid = $row['Subject_Id'];
+            $resultClass = $db->prepare("SELECT Subject_Name FROM asitfa_subject WHERE Subject_Id = $subjectid");
+            $resultClass->execute();
+            $n='';
+            for($i=0; $rowClass = $resultClass->fetch(); $i++){
+                
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $n; ?></td>
+                        <td><?php echo $rowClass['Subject_Name']; ?></td>
+                        <td><?php echo $row['Total_Mark']; ?></td>
+                        <td><?php echo $row['Pass_Mark']; ?></td>
+                        <td><?php echo $row['Obtain_Mark']; ?></td>
+                        <td>
+                            <?php 
+                            if($row['Pass_Mark']>$row['Obtain_Mark']){
+
+                                echo "Fail";
+                            }
+                            else{
+
+                                echo "Pass";
+                            }
+
+                             ?>
+
+                        </td>
+                        <td class="hidden"></td>
+                        <td class="hidden"></td>
+                    </tr>
+                 
+                    
+
+                    </div>
+                <?php
+                
+}
+              
+        }
+         $resulttotal = $db->prepare("SELECT SUM(Total_Mark), SUM(Pass_Mark), SUM(Obtain_Mark) FROM `asitfa_result` WHERE Exam_Id = $examid AND Student_Id = $studentid ");
+        $resulttotal->execute();
+        for($i=0; $rowtotal = $resulttotal->fetch(); $i++){ 
+          ?>
+                <tr>
+                    <td>
+                      
+                  </td>
+                  <td>Total Mark</td>
+                        <td><?php echo $rowtotal['SUM(Total_Mark)']; ?></td>
+                        <td><?php echo $rowtotal['SUM(Pass_Mark)']; ?></td>
+                        <td><?php echo $rowtotal['SUM(Obtain_Mark)']; ?></td>
+                  
+                  </tr>
+            <?php
+        }
+    }
+
+
+    //Class Wise Student
+
+    function ClasswiseStudent($classid,$branchid){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student WHERE Class_Id = $classid AND Branch_Id = $branchid  ORDER BY Joining_Date  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Student_Id']; ?></td>
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $row['Mobile_No']; ?></td>
+                        <td><?php echo $row['Address']; ?></td>
+                        <td>
+                            <a href="viewStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="View" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="editStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addFee.php?studentid=<?php echo $row['Student_Id']; ?>"  title="Add Fee" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+        }
+    }
+
+
+        function ClasswiseStudentCertificates($classid){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student WHERE Class_Id = $classid  ORDER BY Joining_Date  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Student_Id']; ?></td>
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $row['Mobile_No']; ?></td>
+                        <td><?php echo $row['Address']; ?></td>
+                        <td>
+                            <a href="selectCertificatesType.php?studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $row['Class_Id']; ?>"" title="Add Bonafied" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="feeNotice.php?studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $row['Class_Id']; ?>" title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addFee.php?studentid=<?php echo $row['Student_Id']; ?>"  title="Add Fee" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+        }
+    }
+
+
+
+
+        function DepartmentwiseStaffCertificates($departmentid){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_staff WHERE Department_Id = $departmentid  ORDER BY Joining_Date  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $departmentid = $row['Department_Id'];
+            $resultDepartment = $db->prepare("SELECT Department_Name FROM asitfa_department WHERE Department_Id = $departmentid");
+            $resultDepartment->execute();
+            for($i=0; $rowDepartment = $resultDepartment->fetch(); $i++){
+                $genderid = $row['Gender'];
+                $resultGender = $db->prepare("SELECT Gender_Name FROM asitfa_gender WHERE Gender_Id = $genderid");
+                $resultGender->execute();
+                for($i=0; $rowGender = $resultGender->fetch(); $i++){
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Staff_Id']; ?></td>
+                       
+                        <td><?php echo $row['Staff_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                         <td><?php echo $rowGender['Gender_Name']; ?></td>
+                        <td><?php echo $row['Post_Apply']; ?></td>
+                        <td><?php echo $rowDepartment['Department_Name']; ?></td>
+                        <td>
+                            <a href="selectStaffCertificatesType.php?staffid=<?php echo $row['Staff_Id']; ?>&department=<?php echo $row['Department_Id']; ?>"" title="Add Bonafied" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="editStudent.php?studentid=<?php echo $row['Student_Id']; ?> title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addFee.php?studentid=<?php echo $row['Student_Id']; ?>"  title="Add Fee" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+            }
+        }
+    }
+    }
+
+
+
+
+	// Start Update Gym Services
+    function UpdateStudent()
+    {
+    	if(isset($_POST["updatestudent"])){
+    		include('config/dbconnection.php');
+            $studentid =  trim($_POST['studentid']);
+            $Branch = trim($_POST['Branch']);
+            $registrationno = trim($_POST['registrationno']);
+            $formno = trim($_POST['formno']);
+            $studentname = trim($_POST['studentname']);
+            $mothername = trim($_POST['mothername']);
+            $fatherame = trim($_POST['fatherame']);
+            $dob1 = trim($_POST['dob']);
+            $dob = date("Y-m-d", strtotime($dob1));
+            $aadhar = trim($_POST['aadhar']);
+            $category = trim($_POST['category']);
+            $homeaddress = trim($_POST['homeaddress']);
+            $localaddress = trim($_POST['localaddress']);
+            $gender = trim($_POST['gender']);
+            $studentmobile = trim($_POST['studentmobile']);
+            $studentemail = trim($_POST['studentemail']);
+            $fathermobile = trim($_POST['fathermobile']);
+            $astartyear = trim($_POST['astartyear']);
+
+            $class = trim($_POST['class']);
+            $boarduniversity = trim($_POST['boarduniversity']);
+            $year = trim($_POST['year']);
+            $markperc = trim($_POST['markperc']);
+            $subject = trim($_POST['subject']);
+            $schoolname = trim($_POST['schoolname']);
+
+            $medium = trim($_POST['medium']);
+            $board = trim($_POST['board']);
+            $group = trim($_POST['group']);
+            
+            $datejoin = $_POST['joindate'];
+            $joindate = date("Y-m-d", strtotime($datejoin));
+            // $imgFile = trim($_FILES['uploadimage']['name']);
+            // $tmp_dir = trim($_FILES['uploadimage']['tmp_name']);
+            // $imgSize = trim($_FILES['uploadimage']['size']);
+
+            // if(empty($imgFile)){
+            //    $errMSG = "Please Select Image File.";
+            //   }
+            //   else
+            //   {
+            //    $upload_dir = 'upload/'; // upload directory
+             
+            //    $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
+              
+            //    // valid image extensions
+            //    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+              
+            //    // rename uploading image
+            //    $userpic = $imgFile;
+                
+            //    // allow valid image file formats
+            //    if(in_array($imgExt, $valid_extensions)){   
+            //     // Check file size '5MB'
+            //     if($imgSize < 5000000)    {
+            //      move_uploaded_file($tmp_dir,$upload_dir.$userpic);
+            //     }
+            //     else{
+            //      $errMSG = "Sorry, your file is too large.";
+            //     }
+            //    }
+            //    else{
+            //     $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";  
+            //    }
+            //   }
+
+        
+
+            
+			try {
+                $sql = "UPDATE asitfa_student SET Branch_Id = :a, Redg_No = :b, Form_No = :c, Class_Id = :d, Aadhar_No = :e, Student_Name = :f, Mother_Name = :g, Father_Name = :h, Dob = :i, Gender_Id = :j, Category_Id = :k,  Mobile_No = :l, Email_Id = :m, Guardian_No = :n, Address = :o, Local_Address = :p, Board_University = :q, Year = :r, Percent_Mark = :s, Subjects = :t, School_Name = :u, Medium = :v, Board = :w, Subject_Group = :x, Joining_Date = :y, Academic_Id = :z WHERE Student_Id = '$studentid'";
+	    		$z = $db->prepare($sql);
+	    		$insertservice = $z->execute(array(':a'=>$Branch,':b'=>$registrationno,':c'=>$formno,':d'=>$class,':e'=>$aadhar,':f'=>$studentname,':g'=>$mothername,':h'=>$fatherame,':i'=>$dob,':j'=>$gender,':k'=>$category,':l'=>$studentmobile,':m'=>$studentemail,':n'=>$fathermobile,':o'=>$homeaddress,':p'=>$localaddress,':q'=>$boarduniversity, ':r'=>$year, ':s'=>$markperc, ':t'=>$subject, ':u'=>$schoolname, ':v'=>$medium, ':w'=>$board, ':x'=>$group, ':y'=>$joindate, ':z'=>$astartyear,));
+				if ($insertservice) {
+					echo "<script type= 'text/javascript'>alert('Student Record Updated Successfully');</script>";
+				}
+				else{
+					echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+				}
+				$db = null;
+				
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+		}
+    }
+
+
+    //Delete Member
+    function DeleteStudent()
+    {
+    	if(isset($_POST["DeleteStudent"])){
+    		include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+				$dbmember = "DELETE FROM asitfa_student WHERE Student_Id = ?";
+				$q = $db->prepare($dbmember);
+				$response = $q->execute(array($id));  
+	        }
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+        }
+    }
+    
+    //ACTIVE MEMBER
+
+    function activeStudent(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student WHERE Active = '1' ORDER BY Joining_Date  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+            for($i=0; $rowClass = $resultClass->fetch(); $i++){
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $row['Mobile_No']; ?></td>
+                        <td><?php echo $rowClass['Class_Name']; ?></td>
+                        <td class="hidden"></td>
+                        <td>
+                            <a href="viewStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="View" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="editStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addFeeMember.php?memberid=<?php echo $row['Student_Id']; ?>"  title="Add Fee" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+        }
+}
+    }
+
+
+    //ACTIVE MEMBER
+
+    function deactiveStudent(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student WHERE Active = '0' ORDER BY Joining_Date  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+            for($i=0; $rowClass = $resultClass->fetch(); $i++)
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $row['Mobile_No']; ?></td>
+                        <td><?php echo $rowClass['Class_Name']; ?></td>
+                        <td class="hidden"></td>
+                        <td>
+                            <a href="viewStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="View" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="editStudent.php?studentid=<?php echo $row['Student_Id']; ?>" title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Student_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addFeeMember.php?memberid=<?php echo $row['Student_Id']; ?>"  title="Add Fee" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+        }
+    }
+
+
+    // Start Deactivate Member
+    function DeactivateStudent()
+    {
+        if(isset($_POST["DeactivateStudent"])){
+            include('config/dbconnection.php');
+            $studentid = $_POST['id'];
+            
+            
+            try {
+                $sql = "UPDATE asitfa_student SET Active = :a WHERE Student_Id = '$studentid'";
+                $q = $db->prepare($sql);
+                $insertservice = $q->execute(array(':a'=>0,));
+                if ($insertservice) {
+                    echo "<script type= 'text/javascript'>alert('Student Deactivated Successfully');</script>";
+                }
+                else{
+                    echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                }
+                $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    // Start Activate Member
+    function ActivateStudent()
+    {
+        if(isset($_POST["ActivateStudent"])){
+            include('config/dbconnection.php');
+            $studentid = $_POST['id'];
+            
+            
+            try {
+                $sql = "UPDATE asitfa_student SET Active = :a WHERE Student_Id = '$studentid'";
+                $q = $db->prepare($sql);
+                $insertservice = $q->execute(array(':a'=>1,));
+                if ($insertservice) {
+                    echo "<script type= 'text/javascript'>alert('Student Activated Successfully');</script>";
+                }
+                else{
+                    echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                }
+                $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+        function viewStudentBook($class,$branchid){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_student WHERE Class_Id = $class and Branch_Id = $branchid");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+            for($i=0; $rowClass = $resultClass->fetch(); $i++){
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Student_Id']; ?></td>
+                        <td><?php echo $row['Redg_No']; ?></td>
+                        <td><?php echo $row['Student_Name']; ?></td>
+                        <td><?php echo $row['Father_Name']; ?></td>
+                        <td><?php echo $rowClass['Class_Name']; ?></td>
+                        <td><img src="upload/<?php echo $row['Image']; ?>" class="img-rounded" width="50px" height="50px" /></td>
+                        <td>
+                            <a href="issueBook.php?studentid=<?php echo $row['Student_Id']; ?>&classid=<?php echo $class; ?>" title="View" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                           
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStudent" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Student_Id']; ?>" tabindex="<?php echo $row['Student_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Student_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStudent" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Student_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStudent" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+                }
+        
+        }
+    }
+        /*****************************************************************************
+    *****************************ADD STAFF**********************************
+    *****************************************************************************/
+
+    function addStaff(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $staffname = trim($_POST['staffname']);
+            $gender = trim($_POST['gender']);
+            $fatherame = trim($_POST['fatherame']);
+            $department = trim($_POST['department']);
+            $postapply = trim($_POST['postapply']);
+            $subject = trim($_POST['subject']);
+            $email = trim($_POST['email']);
+            $nationality = trim($_POST['nationality']);
+            $hobbies = trim($_POST['hobbies']);
+            $maritalstatus = trim($_POST['maritalstatus']);
+            $experience = trim($_POST['experience']);
+            $category = trim($_POST['category']);
+            $dob1 = trim($_POST['dob']);
+            $dob = date("Y-m-d", strtotime($dob1));
+            $homeaddress = trim($_POST['homeaddress']);
+            $prepackage = trim($_POST['prepackage']);
+            $basic = trim($_POST['basic']);
+            $datejoin = trim($_POST['joindate']);
+            $joindate = date("Y-m-d", strtotime($datejoin));
+            $transportservice = trim($_POST['transportservice']);
+            $route = trim($_POST['route']);
+            $pickup = trim($_POST['pickup']);
+           
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+
+            $imgFile = trim($_FILES['uploadimage']['name']);
+            $tmp_dir = trim($_FILES['uploadimage']['tmp_name']);
+            $imgSize = trim($_FILES['uploadimage']['size']);
+
+            if(empty($imgFile)){
+               $errMSG = "Please Select Image File.";
+              }
+              else
+              {
+               $upload_dir = 'upload/staff/'; // upload directory
+             
+               $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
+              
+               // valid image extensions
+               $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+              
+               // rename uploading image
+               $userpic = $imgFile;
+                
+               // allow valid image file formats
+               if(in_array($imgExt, $valid_extensions)){   
+                // Check file size '5MB'
+                if($imgSize < 5000000)    {
+                 move_uploaded_file($tmp_dir,$upload_dir.$userpic);
+                }
+                else{
+                 $errMSG = "Sorry, your file is too large.";
+                }
+               }
+               else{
+                $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";  
+               }
+              }
+
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_staff");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Regd Number is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_staff ( Staff_Name, Gender, Father_Name, Department_Id, Post_Apply, Subject_Id, Email_Id, Nationality, Hobbies, Marital_Status, Experience,  Category_Id, Image, Dob, Address, Previous_Package, Basic_Salary, Joining_Date, Transport_Service, Transport_Id, Pickup_Point,  Rec_Time_Stamp) VALUES (:a,:b,:c,:d,:e,:f,:g,:h,:i,:j,:k,:l,:m,:n,:o,:p,:q,:r,:s,:t,:u,:v)";
+                    $aa = $db->prepare($sql);
+                    $insertservice = $aa->execute(array(':a'=>$staffname,':b'=>$gender,':c'=>$fatherame,':d'=>$department,':e'=>$postapply,':f'=>$subject,':g'=>$email,':h'=>$nationality,':i'=>$hobbies,':j'=>$maritalstatus,':k'=>$experience,':l'=>$category,':m'=>$dob,':n'=>$homeaddress,':o'=>$prepackage,':p'=>$basic, ':q'=>$joindate, ':r'=>$transportservice, ':s'=>$route, ':t'=>$pickup, ':u'=>$RecTimeStamp, ':v'=>$imgFile,));
+
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Staff Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+
+                    $db = null;
+                }
+            }
+            catch(PDOException $ee)
+            {
+                echo $ee->getMessage();
+            }
+        }
+    }
+
+    //FETCH SERVICES FROM DATABASE
+
+    function viewStaff(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_staff ORDER BY Joining_Date  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $departmentid = $row['Department_Id'];
+            $resultDepartment = $db->prepare("SELECT Department_Name FROM asitfa_department WHERE Department_Id = $departmentid");
+            $resultDepartment->execute();
+            for($i=0; $rowDepartment = $resultDepartment->fetch(); $i++){
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Staff_Id']; ?></td>
+                        <td><?php echo $row['Staff_Name']; ?></td>
+                        <td><?php echo $row['Post_Apply']; ?></td>
+                        <td><?php echo $row['Basic_Salary']; ?></td>
+                        <td><?php echo $rowDepartment['Department_Name']; ?></td>
+                        <td><img src="upload/staff/<?php echo $row['Image']; ?>" class="img-rounded" width="50px" height="50px" /></td>
+                        <td>
+                            <a href="viewStaff.php?staffid=<?php echo $row['Staff_Id']; ?>" title="View" class="btn btn-default btn-sm">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a href="editStaff.php?staffid=<?php echo $row['Staff_Id']; ?>" title="Edit" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" title="Delete" data-target="#DeleteModal-<?php echo $row['Staff_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <button class="btn btn-danger btn-sm" data-placement="top" title="Deactivate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Staff_Id']; ?>"><i class="fa fa-ban" aria-hidden="true"></i>  </button>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            <button class="btn btn-success btn-sm" data-placement="top" title="Activate" data-toggle="modal"  data-target="#DeactiveModal-<?php echo $row['Staff_Id']; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i>  </button>
+                            <?php
+                                } 
+                            ?>
+                            <!--Make Payment Link-->
+                            <?php 
+                                if($row['Active'] =='1')
+                                { 
+                            ?>
+                            <a href="addSalary.php?staffid=<?php echo $row['Staff_Id']; ?>"  title="Add Salary" class="btn btn-danger btn-sm">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </a>    
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
+                            
+                            <?php
+                                } 
+                            ?>
+                            <a href="generateIdCard.php?studentid=<?php echo $row['Staff_Id']; ?>" title="Id Card" class="btn btn-default btn-sm">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            
+                        </td>
+                    </tr>
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="DeleteModal-<?php echo $row['Staff_Id']; ?>" tabindex="<?php echo $row['Staff_Id']; ?>"  role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Staff_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                    </div>
+                                    <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                        <input type="hidden" name="id" value="<?php echo $row['Staff_Id']; ?>">
+                                        <div class="modal-body">
+                                            <button type="submit" class="btn btn-danger" name = "DeleteStaff" >Delete</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="DeactiveModal-<?php echo $row['Staff_Id']; ?>" tabindex="<?php echo $row['Staff_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Staff_Id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <?php 
+                                            if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to deactivate this Member? </h4>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <h4 class="modal-title" id="H2">Are you sure want to Activate this Member? </h4> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php 
+                                        if($row['Active'] == '1')
+                                            { 
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Staff_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "DeactivateStaff" >Deactivate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                        <?php 
+                                            }
+                                                else
+                                            {
+                                        ?>
+                                        <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                            <input type="hidden" name="id" value="<?php echo $row['Staff_Id']; ?>">
+                                            <div class="modal-body">
+                                                <button type="submit" class="btn btn-danger" name = "ActivateStaff" >Activate</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form> 
+                                        <?php   
+                                            }
+                                        ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php
+                }
+        
+        }
+    }
+
+
+    function viewStaffBirthday(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_staff ORDER BY Dob  DESC");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $departmentid = $row['Department_Id'];
+            $resultDepartment = $db->prepare("SELECT Department_Name FROM asitfa_department WHERE Department_Id = $departmentid");
+            $resultDepartment->execute();
+            for($i=0; $rowDepartment = $resultDepartment->fetch(); $i++){
+                
+                ?>
+                    <tr class="record">
+                        <td><?php echo $row['Staff_Id']; ?></td>
+                        <td><?php echo $row['Staff_Name']; ?></td>
+                        <td><?php echo $row['Post_Apply']; ?></td>
+                        <td><?php echo $row['Basic_Salary']; ?></td>
+                        <td><?php echo $rowDepartment['Department_Name']; ?></td>
+                        <td><?php echo $row['Dob']; ?></td>
+
+                    </tr>
+                
+                <?php
+                }
+        
+        }
+    }
+
+
+
+    function UpdateStaff()
+    {
+        if(isset($_POST["updatestaff"])){
+            include('config/dbconnection.php');
+            $staffid =  trim($_POST['staffid']);
+            $staffname = trim($_POST['staffname']);
+            $gender = trim($_POST['gender']);
+            $fatherame = trim($_POST['fatherame']);
+            $department = trim($_POST['department']);
+            $postapply = trim($_POST['postapply']);
+            $subject = trim($_POST['subject']);
+            $email = trim($_POST['email']);
+            $nationality = trim($_POST['nationality']);
+            $hobbies = trim($_POST['hobbies']);
+            $maritalstatus = trim($_POST['maritalstatus']);
+            $experience = trim($_POST['experience']);
+            $category = trim($_POST['category']);
+            $dob1 = trim($_POST['dob']);
+            $dob = date("Y-m-d", strtotime($dob1));
+            $homeaddress = trim($_POST['homeaddress']);
+            $prepackage = trim($_POST['prepackage']);
+            $basic = trim($_POST['basic']);
+            $datejoin = trim($_POST['joindate']);
+            $joindate = date("Y-m-d", strtotime($datejoin));
+            $transportservice = trim($_POST['transportservice']);
+            $route = trim($_POST['route']);
+            $pickup = trim($_POST['pickup']);
+
+            // $imgFile = trim($_FILES['uploadimage']['name']);
+            // $tmp_dir = trim($_FILES['uploadimage']['tmp_name']);
+            // $imgSize = trim($_FILES['uploadimage']['size']);
+
+            // if(empty($imgFile)){
+            //    $errMSG = "Please Select Image File.";
+            //   }
+            //   else
+            //   {
+            //    $upload_dir = 'upload/'; // upload directory
+             
+            //    $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
+              
+            //    // valid image extensions
+            //    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+              
+            //    // rename uploading image
+            //    $userpic = $imgFile;
+                
+            //    // allow valid image file formats
+            //    if(in_array($imgExt, $valid_extensions)){   
+            //     // Check file size '5MB'
+            //     if($imgSize < 5000000)    {
+            //      move_uploaded_file($tmp_dir,$upload_dir.$userpic);
+            //     }
+            //     else{
+            //      $errMSG = "Sorry, your file is too large.";
+            //     }
+            //    }
+            //    else{
+            //     $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";  
+            //    }
+            //   }
+            
+            try {
+                $sql = "UPDATE asitfa_staff SET Staff_Name = :a, Gender = :b, Father_Name = :c, Department_Id = :d, Post_Apply = :e, Subject_Id = :f, Email_Id = :g, Nationality = :h, Hobbies = :i, Marital_Status = :j, Experience = :k, Category_Id = :l, Dob = :m, Address = :n, Previous_Package = :o, Basic_Salary = :p, Joining_Date = :q, Transport_Service = :r, Transport_Id = :s, Pickup_Point = :t WHERE Staff_Id = '$staffid'";
+                $z = $db->prepare($sql);
+                $insertservice = $z->execute(array(':a'=>$staffname,':b'=>$gender,':c'=>$fatherame,':d'=>$department,':e'=>$postapply,':f'=>$subject,':g'=>$email,':h'=>$nationality,':i'=>$hobbies,':j'=>$maritalstatus,':k'=>$experience,':l'=>$category,':m'=>$dob,':n'=>$homeaddress,':o'=>$prepackage,':p'=>$basic,':q'=>$joindate,':r'=>$transportservice,':s'=>$route,':t'=>$pickup,));
+                if ($insertservice) {
+                    echo "<script type= 'text/javascript'>alert('Staff Record Updated Successfully');</script>";
+                }
+                else{
+                    echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                }
+                $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+        function DeactivateStaff()
+    {
+        if(isset($_POST["DeactivateStaff"])){
+            include('config/dbconnection.php');
+            $staffid = $_POST['id'];
+            
+            
+            try {
+                $sql = "UPDATE asitfa_staff SET Active = :a WHERE Staff_Id = '$staffid'";
+                $q = $db->prepare($sql);
+                $insertservice = $q->execute(array(':a'=>0,));
+                if ($insertservice) {
+                    echo "<script type= 'text/javascript'>alert('Staff Deactivated Successfully');</script>";
+                }
+                else{
+                    echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                }
+                $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    // Start Activate Member
+    function ActivateStaff()
+    {
+        if(isset($_POST["ActivateStaff"])){
+            include('config/dbconnection.php');
+            $staffid = $_POST['id'];
+            
+            
+            try {
+                $sql = "UPDATE asitfa_staff SET Active = :a WHERE Staff_Id = '$staffid'";
+                $q = $db->prepare($sql);
+                $insertservice = $q->execute(array(':a'=>1,));
+                if ($insertservice) {
+                    echo "<script type= 'text/javascript'>alert('staff Activated Successfully');</script>";
+                }
+                else{
+                    echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                }
+                $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+        function DeleteStaff()
+    {
+        if(isset($_POST["DeleteStaff"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbmember = "DELETE FROM asitfa_staff WHERE Staff_Id = ?";
+                $q = $db->prepare($dbmember);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+    
+
+}

@@ -1,0 +1,5 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Saddam Hossain ,"H.No 62, Vill - Sapkata , P.S - Gossaigaon, Near Sapkata Police Outpost ",9957251690,783360,#4349,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AS,Gossaigaon ,,0.205,0,4144,,,,,,,,COD
+Sengsram Sangma,"H.No 1, Jadi Bazar, Vilyam Nagar, Jadigittim",9366585792,794111,#4353,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,ML,Jadigittim,,0.205,0,4144,,,,,,,,COD
+Rakesh Yadav,"H.No 504, Gaytri Colony, Gayatri Mata Mandir Ke Paas, Bhadera Bairad",7898344150,473793,#4357,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,MP,Bairad,,0.205,0,4144,,,,,,,,COD
+Aditya Bhatkar,"Gulzari Plot Naka, Opp. Power House (mseb) Nachangaon Road, Pulgaon",8530388373,442302,#4359,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,MH,Pulgaon,,0.205,0,4144,,,,,,,,COD

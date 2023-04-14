@@ -1,0 +1,4 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Dulam Srihari,"Tallapudi Bus Stop, Papisetti vari street",9640014313,534341,,"Galaxy Watch4 Classic LTE (4.6cm, Black)",1,20,15,8,1699,1699,Godavari,Andhra Pradesh,,0.205,1699,4136,,,,,,,,COD
+Vikas Thombre,"24 Icd Complex Jamiyatpura, Khodiyar",9974983589,382423,,"Galaxy Watch4 Classic LTE (4.6cm, Black)",1,20,15,8,1699,1699,Gandhinagar,Gujarat,,0.205,1699,4136,,,,,,,,COD
+Abey Jacob,"Puthoor plaza nedumkandam, Puthoor plaza",9847970894,685553,,"Galaxy Watch4 Classic LTE (4.6cm, Black)",1,20,15,8,1699,1699,Idukki,Kerala,,0.205,1699,4136,,,,,,,,COD

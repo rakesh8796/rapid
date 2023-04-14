@@ -1,0 +1,5 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Ranavijay,"Plot no 80 ZSB, BJS Colony",7696724767,342006,,Kosmos Prime 2,1,8,8,8,1549,1549,RJ,Jodhpur,,0.102,1549,2054,,,,,,,,COD
+Saravanakumar,"226/3 mgr.nagar surulipatti, House",9444432394,625516,,Kosmos Prime 2,1,8,8,8,1549,1549,TN,Cumbum,,0.102,1549,2054,,,,,,,,COD
+Mr Danish,"Jogipet, Fire station jogipet andole",7654288071,503270,,Kosmos Prime 2,1,8,8,8,1549,1549,TS,Sungareddy,,0.102,1549,2054,,,,,,,,COD
+Nagaraju,"1-89, Ramannapeta,",9392411297,523187,,Kosmos Prime 2,1,8,8,8,1549,1549,AP,Vetapalem,,0.102,1549,2054,,,,,,,,COD

@@ -1,0 +1,2 @@
+User ID,Awb No,Order No,PickUp Date,Order Status,Courier Remark,Last Status date ,Delivery Date,FirstScanDate,FirstScantime,FirstAttemptDate,EDD,Origin City ,Origin pin code,Destination City,Destination Pincode,Customer Name,Customer Contact,Client Name,Payment Mode,COD Amount,Order Ageing,AttemptCount,CourierName,RTO Date,RTOReason,ZoneName,Last OFD Date,NDR instructions 
+27,1,2,2021-02-23,Pending,Courier Dispatch,2021-03-23,2021-03-23,2021-02-23,04:00:00 AM,2021-02-23,2021-03-23,Delhi,110091,Delhi,110091,Singhaniya,9718465473,Aryan,COD,200,Xpress,2,Rappidx,,,,,

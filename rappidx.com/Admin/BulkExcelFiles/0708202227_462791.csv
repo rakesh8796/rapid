@@ -1,0 +1,3 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Dishaa,"Ward no3 bodoti road, Bihpuria, Lakhimpur",6001624132,784161,RPDXAJ002,Energy Drink,1,10,8,12,9000,1399,Assam,Lakhimpur,,0.25,10399,4558,,,,,,,,COD
+Dony,Opposite senapati bazar ground,7085325717,795106,RPDXAJ003,Energy Drink,1,10,8,12,9000,0,Manipur,Senapati,,0.25,9000,4558,,,,,,,,Prepaid

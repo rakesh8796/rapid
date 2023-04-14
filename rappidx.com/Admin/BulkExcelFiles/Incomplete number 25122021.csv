@@ -1,0 +1,5 @@
+﻿Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Dhiraj Gupta,"Shivshankar nagar, s.p. road near Hindustan bank Wadala east",8369066821    ,400037,,"Realme Smart Watch S Pro with 3.53 cm (1.39"") AMOLED Touchscreen",1,20,15,8,1699,1699,MH,Mumbai,,0.205,1699,4136,,,,,,,,COD
+Vishal Singh,Bramhnagar chaubepur kanpur nagar,9555992886    ,209203,,"Realme Smart Watch S Pro with 3.53 cm (1.39"") AMOLED Touchscreen",1,20,15,8,1699,1699,UP,Kanpur,,0.205,1699,4136,,,,,,,,COD
+Nishmath U,"2 - 45 Main Road, Main road",9059898988    ,503309,,Kospet Prime 2 Android 10 Smart Watch P22 Octa-core Phone ,1,20,15,8,1699,1699,TS,Madnoor,,0.205,1699,4136,,,,,,,,COD
+Manik Garud,"Mystic Flavours Giridhar Nagar Warje, Mystick flavours restaurant",9022251207    ,411038,,Huami Amazfit GTS Smart Watch (Obsidian Black),1,20,15,8,1699,1699,MH,Pune,,0.205,1699,4136,,,,,,,,COD

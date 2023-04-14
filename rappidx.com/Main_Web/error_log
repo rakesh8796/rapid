@@ -1,0 +1,12 @@
+[05-Dec-2021 22:00:02 Asia/Kolkata] PHP Fatal error:  Uncaught phpmailerException: Invalid address:  (addAnAddress to): Enter your email in /home3/badmagwl/public_html/server10/rappidx.com/phpmailer/class.phpmailer.php:881
+Stack trace:
+#0 /home3/badmagwl/public_html/server10/rappidx.com/phpmailer/class.phpmailer.php(821): PHPMailer->addOrEnqueueAnAddress('to', 'Enter your emai...', '')
+#1 /home3/badmagwl/public_html/server10/rappidx.com/SignupNew.php(45): PHPMailer->addAddress('Enter your emai...')
+#2 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/phpmailer/class.phpmailer.php on line 881
+[05-Dec-2021 22:00:13 Asia/Kolkata] PHP Fatal error:  Uncaught phpmailerException: Invalid address:  (addAnAddress to): Email in /home3/badmagwl/public_html/server10/rappidx.com/phpmailer/class.phpmailer.php:881
+Stack trace:
+#0 /home3/badmagwl/public_html/server10/rappidx.com/phpmailer/class.phpmailer.php(821): PHPMailer->addOrEnqueueAnAddress('to', 'Email', '')
+#1 /home3/badmagwl/public_html/server10/rappidx.com/SignupNew.php(45): PHPMailer->addAddress('Email')
+#2 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/phpmailer/class.phpmailer.php on line 881

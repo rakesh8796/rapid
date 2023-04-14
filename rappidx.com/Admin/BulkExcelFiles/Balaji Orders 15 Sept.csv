@@ -1,0 +1,5 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Surya Prakesh,"Veeranam road kelambakkam, @spbike service",9789481419    ,603103,,Kosmos Prime 2,1,8,8,8,1598,1598,TN,Chennai,,0.102,1598,2054,,,,,,,,COD
+rijwan khan,"chhapri khurd, Near madina msjid foji colony ",6378895561    ,341303,,Kosmos Prime 2,1,8,8,8,1598,1598,RJ,didwana,,0.102,1598,2054,,,,,,,,COD
+Jainam  Chhapia,"A/6, New vrundavan vihar flat ,nr rc patel school vasna",9327773137    ,380007,,Kosmos Prime 2,1,8,8,8,1598,1598,GJ,Ahmedabad,,0.102,1598,2054,,,,,,,,COD
+Bahanas B,"Lulu home appliances, Kilimanoor",8086295970    ,695601,,Kosmos Prime 2,1,8,8,8,1598,1598,KL,Kilimanoor,,0.102,1598,2054,,,,,,,,COD

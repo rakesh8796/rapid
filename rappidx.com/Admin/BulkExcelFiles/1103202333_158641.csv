@@ -1,0 +1,131 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Mar 11, 2023 at 12:58 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `philon_rappidx`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `spark_single_order`
+--
+
+CREATE TABLE `spark_single_order` (
+  `Single_Order_Id` bigint(11) NOT NULL,
+  `Order_Type` varchar(200) DEFAULT NULL,
+  `User_Id` int(11) DEFAULT NULL,
+  `orderno` varchar(250) DEFAULT NULL,
+  `Awb_Number` varchar(300) DEFAULT NULL,
+  `awb_gen_by` varchar(150) DEFAULT NULL,
+  `Name` varchar(300) DEFAULT NULL,
+  `Address` varchar(300) DEFAULT NULL,
+  `email` varchar(150) NOT NULL,
+  `State` varchar(300) DEFAULT NULL,
+  `City` varchar(300) DEFAULT NULL,
+  `Mobile` varchar(11) DEFAULT NULL,
+  `Pincode` varchar(20) DEFAULT NULL,
+  `item_cate` varchar(250) DEFAULT NULL,
+  `Item_Name` varchar(300) DEFAULT NULL,
+  `Quantity` int(11) DEFAULT NULL,
+  `Width` varchar(100) DEFAULT NULL,
+  `Height` varchar(100) DEFAULT NULL,
+  `Length` varchar(100) DEFAULT NULL,
+  `Actual_Weight` float DEFAULT NULL,
+  `Total_Amount` float DEFAULT NULL,
+  `Invoice_Value` float DEFAULT NULL,
+  `Cod_Amount` float DEFAULT NULL,
+  `agent_fee` float DEFAULT NULL,
+  `agent_total_freight_amt` float DEFAULT NULL,
+  `additionaltype` varchar(250) DEFAULT NULL,
+  `Rec_Time_Stamp` datetime DEFAULT current_timestamp(),
+  `Rec_Time_Date` date DEFAULT NULL,
+  `Last_Time_Stamp` datetime DEFAULT NULL,
+  `Last_Stamp_Date` date DEFAULT NULL,
+  `pickupdate` date DEFAULT NULL,
+  `pickupdatetime` datetime DEFAULT NULL,
+  `delivereddate` date DEFAULT NULL,
+  `delivereddatetime` datetime DEFAULT NULL,
+  `rtodate` date DEFAULT NULL,
+  `rtodatetime` datetime DEFAULT NULL,
+  `canceldate` date DEFAULT NULL,
+  `canceldatetime` datetime DEFAULT NULL,
+  `uploadtype` varchar(100) DEFAULT NULL,
+  `Active` tinyint(4) NOT NULL DEFAULT 1,
+  `order_status` varchar(250) DEFAULT NULL,
+  `order_status1` varchar(250) DEFAULT NULL,
+  `order_status_show` varchar(250) DEFAULT NULL,
+  `pickup_id` varchar(250) DEFAULT NULL,
+  `Address_Id` int(11) DEFAULT NULL,
+  `pickup_name` varchar(250) DEFAULT NULL,
+  `pickup_mobile` varchar(13) DEFAULT NULL,
+  `pickup_pincode` bigint(20) DEFAULT NULL,
+  `pickup_gstin` varchar(100) DEFAULT NULL,
+  `pickup_address` varchar(400) DEFAULT NULL,
+  `pickup_state` varchar(100) DEFAULT NULL,
+  `pickup_city` varchar(100) DEFAULT NULL,
+  `order_cancel` int(11) DEFAULT NULL,
+  `order_cancel_reasion` varchar(250) DEFAULT NULL,
+  `attemptcount` int(11) DEFAULT 0,
+  `VolumetricWeigh` varchar(100) NOT NULL,
+  `ChargeableWeight` varchar(100) NOT NULL,
+  `xberrors` varchar(800) DEFAULT NULL,
+  `dhlerrors` varchar(800) DEFAULT NULL,
+  `dhl2errors` varchar(250) DEFAULT NULL,
+  `ekterrors` varchar(250) DEFAULT NULL,
+  `shferrors` varchar(800) DEFAULT NULL,
+  `dtdcerrors` varchar(800) DEFAULT NULL,
+  `showerrors` varchar(800) DEFAULT NULL,
+  `apihitornot` int(11) NOT NULL DEFAULT 0,
+  `uploaddate` date DEFAULT NULL,
+  `uploadtime` time DEFAULT NULL,
+  `shipstatus` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `spark_single_order`
+--
+
+INSERT INTO `spark_single_order` (`Single_Order_Id`, `Order_Type`, `User_Id`, `orderno`, `Awb_Number`, `awb_gen_by`, `Name`, `Address`, `email`, `State`, `City`, `Mobile`, `Pincode`, `item_cate`, `Item_Name`, `Quantity`, `Width`, `Height`, `Length`, `Actual_Weight`, `Total_Amount`, `Invoice_Value`, `Cod_Amount`, `agent_fee`, `agent_total_freight_amt`, `additionaltype`, `Rec_Time_Stamp`, `Rec_Time_Date`, `Last_Time_Stamp`, `Last_Stamp_Date`, `pickupdate`, `pickupdatetime`, `delivereddate`, `delivereddatetime`, `rtodate`, `rtodatetime`, `canceldate`, `canceldatetime`, `uploadtype`, `Active`, `order_status`, `order_status1`, `order_status_show`, `pickup_id`, `Address_Id`, `pickup_name`, `pickup_mobile`, `pickup_pincode`, `pickup_gstin`, `pickup_address`, `pickup_state`, `pickup_city`, `order_cancel`, `order_cancel_reasion`, `attemptcount`, `VolumetricWeigh`, `ChargeableWeight`, `xberrors`, `dhlerrors`, `dhl2errors`, `ekterrors`, `shferrors`, `dtdcerrors`, `showerrors`, `apihitornot`, `uploaddate`, `uploadtime`, `shipstatus`) VALUES
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Saurabh', 'Varanasi', '', 'Delhi', 'Delhi', '7676767788', '110007', NULL, 'Laptop', 10, '10', '21', '22', 30, 100, 50, 20, NULL, NULL, '', '2023-02-27 11:30:41', '2023-02-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anish', 'Machodari', '', 'Delhi', 'Delhi', '9787878788', '110007', NULL, 'Mobile', 11, '11', '20', '23', 40, 110, 87, 30, NULL, NULL, '', '2023-02-27 11:30:41', '2023-02-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, '12', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Anupam', 'Ravindrapuri', '', 'Delhi', 'Delhi', '6767668768', '110007', NULL, 'Laptop', 12, '12', '19', '24', 50, 120, 54, 40, NULL, NULL, '', '2023-02-27 11:30:41', '2023-02-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anil', 'Lanka', '', 'Delhi', 'Delhi', '5656566767', '110007', NULL, 'Mobile', 13, '13', '18', '25', 30, 130, 70, 50, NULL, NULL, '', '2023-02-27 11:30:41', '2023-02-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'NM', 'ytfdty', 'nma1138@barrownzgroup.com', 'up', 'Lucknow', '9898989898', '223221', NULL, 'Mobile', 4, '45', '43', '54', 450, NULL, 0, 400, NULL, NULL, 'No', '2023-02-27 11:39:30', '2023-02-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Single', 1, 'Pending', 'Pending', 'Upload', '', 0, 'pickup name', '9876543210', 110055, NULL, 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '450 KG', '20.898', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Saurabh', 'Varanasi', '', 'Delhi', 'Delhi', '7676767788', '110007', NULL, 'Laptop', 10, '10', '21', '22', 30, 100, 50, 20, NULL, NULL, '', '2023-03-11 16:09:51', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anish', 'Machodari', '', 'Delhi', 'Delhi', '9787878788', '110007', NULL, 'Mobile', 11, '11', '20', '23', 40, 110, 87, 30, NULL, NULL, '', '2023-03-11 16:09:51', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, '12', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Anupam', 'Ravindrapuri', '', 'Delhi', 'Delhi', '6767668768', '110007', NULL, 'Laptop', 12, '12', '19', '24', 50, 120, 54, 40, NULL, NULL, '', '2023-03-11 16:09:51', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anil', 'Lanka', '', 'Delhi', 'Delhi', '5656566767', '110007', NULL, 'Mobile', 13, '13', '18', '25', 30, 130, 70, 50, NULL, NULL, '', '2023-03-11 16:09:51', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Saurabh', 'Varanasi', '', 'Delhi', 'Delhi', '7676767788', '110007', NULL, 'Laptop', 10, '10', '21', '22', 30, 100, 50, 20, NULL, NULL, '', '2023-03-11 16:10:31', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anish', 'Machodari', '', 'Delhi', 'Delhi', '9787878788', '110007', NULL, 'Mobile', 11, '11', '20', '23', 40, 110, 87, 30, NULL, NULL, '', '2023-03-11 16:10:31', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, '12', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Anupam', 'Ravindrapuri', '', 'Delhi', 'Delhi', '6767668768', '110007', NULL, 'Laptop', 12, '12', '19', '24', 50, 120, 54, 40, NULL, NULL, '', '2023-03-11 16:10:31', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anil', 'Lanka', '', 'Delhi', 'Delhi', '5656566767', '110007', NULL, 'Mobile', 13, '13', '18', '25', 30, 130, 70, 50, NULL, NULL, '', '2023-03-11 16:10:31', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Saurabh', 'Varanasi', '', 'Delhi', 'Delhi', '7676767788', '110007', NULL, 'Laptop', 10, '10', '21', '22', 30, 100, 50, 20, NULL, NULL, '', '2023-03-11 16:41:54', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anish', 'Machodari', '', 'Delhi', 'Delhi', '9787878788', '110007', NULL, 'Mobile', 11, '11', '20', '23', 40, 110, 87, 30, NULL, NULL, '', '2023-03-11 16:41:54', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, '12', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Anupam', 'Ravindrapuri', '', 'Delhi', 'Delhi', '6767668768', '110007', NULL, 'Laptop', 12, '12', '19', '24', 50, 120, 54, 40, NULL, NULL, '', '2023-03-11 16:41:54', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anil', 'Lanka', '', 'Delhi', 'Delhi', '5656566767', '110007', NULL, 'Mobile', 13, '13', '18', '25', 30, 130, 70, 50, NULL, NULL, '', '2023-03-11 16:41:54', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Saurabh', 'Varanasi', '', 'Delhi', 'Delhi', '7676767788', '110007', NULL, 'Laptop', 10, '10', '21', '22', 30, 100, 50, 20, NULL, NULL, '', '2023-03-11 17:17:39', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anish', 'Machodari', '', 'Delhi', 'Delhi', '9787878788', '110007', NULL, 'Mobile', 11, '11', '20', '23', 40, 110, 87, 30, NULL, NULL, '', '2023-03-11 17:17:39', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, '12', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'Prepaid', 33, 'RPDX000', NULL, NULL, 'Anupam', 'Ravindrapuri', '', 'Delhi', 'Delhi', '6767668768', '110007', NULL, 'Laptop', 12, '12', '19', '24', 50, 120, 54, 40, NULL, NULL, '', '2023-03-11 17:17:39', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0),
+(0, 'COD', 33, 'RPDX000', NULL, NULL, 'Anil', 'Lanka', '', 'Delhi', 'Delhi', '5656566767', '110007', NULL, 'Mobile', 13, '13', '18', '25', 30, 130, 70, 50, NULL, NULL, '', '2023-03-11 17:17:39', '2023-03-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Excel', 1, 'Pending', 'Pending', 'Upload', '0', 0, 'pickup name', '9876543210', 110055, '', 'address 1', 'Delhi', 'Delhi', NULL, NULL, 0, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

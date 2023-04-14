@@ -1,0 +1,2 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Mosam Murhade,"Hotel Maharana, Beed Highway, Solapur Road, Dabrul, Aurangabad ",7821808249,431204,#7821808249,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,MH,Aurangabad,,0.205,0,4144,,,,,,,,COD

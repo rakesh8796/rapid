@@ -1,0 +1,3 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Deepak Malik,Vpo mirzapur Kheri ,8307889610    ,131301,,Smart Watch Series 6 with Air Pods Pro,1,20,15,8,1649,1649,HR,Gohana ,,0.205,1649,4136,,,,,,,,COD
+Lokesh Nayak,"Sundarayya Park Bagh Lingampally New Nallakunta, 224/64",7989585162    ,500044,,Smart Watch Series 6 with Air Pods Pro,1,20,15,8,1649,1649,TS,Hyderabad,,0.205,1649,4136,,,,,,,,COD

@@ -1,0 +1,5 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Waight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Saurabh,Varanasi,7676767788,110007,,Laptop,10,10,21,22,50,20,Delhi,Delhi,,30,100,,pickup name,9876543210,110055,,address 1,Delhi,Delhi,Prepaid
+Anish,Machodari,9787878788,110007,,Mobile,11,11,20,23,87,30,Delhi,Delhi,,40,110,,12,9876543210,110055,,address 1,Delhi,Delhi,COD
+Anupam,Ravindrapuri,6767668768,110007,,Laptop,12,12,19,24,54,40,Delhi,Delhi,,50,120,,pickup name,9876543210,110055,,address 1,Delhi,Delhi,Prepaid
+Anil,Lanka,5656566767,110007,,Mobile,13,13,18,25,70,50,Delhi,Delhi,,30,130,,pickup name,9876543210,110055,,address 1,Delhi,Delhi,COD

@@ -1,0 +1,2614 @@
+<?php class Famsmaster   {
+    
+
+
+    /*****************************************************************************
+    *****************************ADD BRANCH**********************************
+    *****************************************************************************/
+
+    function addBranch(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $branchname = trim($_POST['branchname']);
+            $branchaddress = trim($_POST['branchaddress']);
+            $phone = trim($_POST['phone']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_branch WHERE Branch_Contact = '$phone'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Branch is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_branch (Branch_Name, Branch_Address, Branch_Contact, Rec_Time_Stamp) VALUES (:a,:b,:c,:d)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$branchname,':b'=>$branchaddress,':c'=>$phone,':d'=>$RecTimeStamp,));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('New Branch Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //FETCH SERVICES FROM DATABASE
+
+    function viewBranch(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_branch");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr>
+                <td><?php echo $row['Branch_Id']; ?></td>
+                <td><?php echo $row['Branch_Name']; ?></td>
+                <td><?php echo $row['Branch_Address']; ?></td>
+                <td><?php echo $row['Branch_Contact']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Branch_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Branch_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    
+                </td>
+                <td></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Branch_Id']; ?>" tabindex="<?php echo $row['Branch_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Branch_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Branch</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="branchId" value="<?php echo $row['Branch_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Branch Name</label>
+                                        <input type="text" class="form-control" value="<?php echo $row['Branch_Name']; ?>" name="branchname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Branch Address</label>
+                                        <textarea id="branchaddress" placeholder="Address" class="autosize-transition form-control" name="branchaddress"><?php echo $row['Branch_Address']; ?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Phone</label>
+                                        <input type="text" class="form-control" value="<?php echo $row['Branch_Contact']; ?>" name="phone" required/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name="updatebranch" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Branch_Id']; ?>" tabindex="<?php echo $row['Branch_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Branch_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Branch_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteBranch" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateBranch()
+    {
+        if(isset($_POST["updatebranch"])){
+            include('config/dbconnection.php');
+            $id = $_POST['branchId'];
+            $branchname = trim($_POST['branchname']);
+            $branchaddress = trim($_POST['branchaddress']);
+            $phone = trim($_POST['phone']);
+            
+            try {
+
+                $sql = "UPDATE asitfa_branch SET Branch_Name = :a, Branch_Address = :b, Branch_Contact = :c WHERE Branch_Id = '$id'";
+                $q = $db->prepare($sql);
+                $insertservice = $q->execute(array(':a'=>$branchname,':b'=>$branchaddress,':c'=>$phone));
+                if ($insertservice) {
+                    echo "<script type= 'text/javascript'>alert('Branch Updated Successfully');</script>";
+                }
+                else{
+                    echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                }
+                $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    //Delete Services
+    function DeleteBranch()
+    {
+        if(isset($_POST["DeleteBranch"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_branch WHERE Branch_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+    
+
+
+    /*****************************************************************************
+    *****************************ADD GENDER**********************************
+    *****************************************************************************/
+
+    function addGender(){
+    	if(isset($_POST["submit"])){
+    		include('config/dbconnection.php');
+    		$gendername = trim($_POST['gendername']);
+            $genderdetails = trim($_POST['genderdetails']);
+    		$RecTimeStamp = Date("Y/m/d H:m:s");
+    		try {
+
+    			$dbservice = $db->query("SELECT * FROM asitfa_gender WHERE Gender_Name = '$gendername'");
+    			$getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+    			if($getservice>0)
+	            {
+	                echo "<script>alert('Sorry, Gender is already exist')</script>";
+	            }
+	            else{
+	    			$sql = "INSERT INTO asitfa_gender (Gender_Name, Gender_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+	    			$q = $db->prepare($sql);
+	    			$insertservice = $q->execute(array(':a'=>$gendername,':b'=>$genderdetails,':c'=>$RecTimeStamp,));
+					if ($insertservice) {
+						echo "<script type= 'text/javascript'>alert('New Gender Inserted Successfully');</script>";
+					}
+					else{
+						echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+					}
+					$db = null;
+				}
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+    	}
+    }
+
+    //FETCH SERVICES FROM DATABASE
+
+    function viewGender(){
+    	include('config/dbconnection.php');
+    	$result = $db->prepare("SELECT * FROM asitfa_gender");
+		$result->execute();
+		for($i=0; $row = $result->fetch(); $i++){ ?>
+			<tr>
+				<td><?php echo $row['Gender_Id']; ?></td>
+				<td><?php echo $row['Gender_Name']; ?></td>
+                <td><?php echo $row['Gender_Details']; ?></td>
+                <td>
+					<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Gender_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                </td>
+                <td>
+					<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Gender_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  	
+              	</td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+			</tr>
+			<div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Gender_Id']; ?>" tabindex="<?php echo $row['Gender_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Gender_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Gender</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="genderid" value="<?php echo $row['Gender_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Gender Name</label>
+                                        <input type="text" class="form-control" value="<?php echo $row['Gender_Name']; ?>" name="gendername" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Gender Details</label>
+                                        <textarea id="genderdetails" placeholder="Details" class="autosize-transition form-control" name="genderdetails"><?php echo $row['Gender_Details']; ?></textarea>
+                                    </div>
+                                   
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name="updategender" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Gender_Id']; ?>" tabindex="<?php echo $row['Gender_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Gender_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Gender_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteGender" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		<?php	
+		}
+	}
+
+	// Start Update Gym Services
+    function UpdateGender()
+    {
+    	if(isset($_POST["updategender"])){
+    		include('config/dbconnection.php');
+	        $id = $_POST['genderid'];
+	        $gendername = trim($_POST['gendername']);
+            $genderdetails = trim($_POST['genderdetails']);
+	        
+			try {
+
+				$sql = "UPDATE asitfa_gender SET Gender_Name = :a, Gender_Details = :b WHERE Gender_Id = $id";
+	    		$q = $db->prepare($sql);
+	    		$insertservice = $q->execute(array(':a'=>$gendername,':b'=>$genderdetails));
+				if ($insertservice) {
+					echo "<script type= 'text/javascript'>alert('Gender Updated Successfully');</script>";
+				}
+				else{
+					echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+				}
+				$db = null;
+				
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+		}
+    }
+
+
+    //Delete Services
+    function DeleteGender()
+    {
+    	if(isset($_POST["DeleteGender"])){
+    		include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+				$dbservice = "DELETE FROM asitfa_gender WHERE Gender_Id = ?";
+				$q = $db->prepare($dbservice);
+				$response = $q->execute(array($id));  
+	        }
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+        }
+    }
+    
+
+    /*****************************************************************************
+    *****************************ADD Category*************************************
+    *****************************************************************************/
+
+    //ADD GYM PLAN
+
+    function addCategory(){
+    	if(isset($_POST["submit"])){
+    		include('config/dbconnection.php');
+    		$categoryname = trim($_POST['categoryname']);
+            $categorydetails = trim($_POST['categorydetails']);
+    		$RecTimeStamp = Date("Y/m/d H:m:s");
+    		try {
+
+    			$dbservice = $db->query("SELECT * FROM asitfa_category WHERE Category_Name = '$categoryname'");
+    			$getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+    			if($getservice>0)
+	            {
+	                echo "<script>alert('Sorry, Category is already exist')</script>";
+	            }
+	            else{
+	    			$sql = "INSERT INTO asitfa_category (Category_Name, Category_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+	    			$q = $db->prepare($sql);
+	    			$insertservice = $q->execute(array(':a'=>$categoryname,':b'=>$categorydetails,':c'=>$RecTimeStamp));
+					if ($insertservice) {
+						echo "<script type= 'text/javascript'>alert('New Category Inserted Successfully');</script>";
+					}
+					else{
+						echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+					}
+					$db = null;
+				}
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+    	}
+    }
+
+    //FETCH PLAN FROM DATABASE
+
+    function viewCategory(){
+    	include('config/dbconnection.php');
+    	$result = $db->prepare("SELECT * FROM asitfa_category");
+		$result->execute();
+		for($i=0; $row = $result->fetch(); $i++){ ?>
+			<tr class="record">
+				<td><?php echo $row['Category_Id']; ?></td>
+				<td><?php echo $row['Category_Name']; ?></td>
+                <td><?php echo $row['Category_Details']; ?></td>
+                <td>
+					<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Category_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                </td>
+                <td>
+					<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Category_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                </td>
+              	</td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+			<div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Category_Id']; ?>" tabindex="<?php echo $row['Category_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Category_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Category</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="categoryid" value="<?php echo $row['Category_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Category Name</label>
+                                        <input type="text" class="validate[required] form-control" id="add-regular" value = "<?php echo $row['Category_Name']; ?>" name = "categoryname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Category Details</label>
+                                        <textarea id="categorydetails" placeholder="Category Details" class="autosize-transition form-control" name="categorydetails"><?php echo $row['Category_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updateCategory" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Category_Id']; ?>" tabindex="<?php echo $row['Category_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Category_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Category_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteCategory" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		<?php	
+		}
+	}
+
+	// Start Update Gym Services
+    function UpdateCategory()
+    {
+    	if(isset($_POST["updateCategory"])){
+    		include('config/dbconnection.php');
+	        $id = $_POST['categoryid'];
+	        $categoryname = trim($_POST['categoryname']);
+            $categorydetails = trim($_POST['categorydetails']);
+	        
+			try {
+
+	    			$sql = "UPDATE asitfa_Category SET Category_Name = :a, Category_Details = :b WHERE Category_Id = '$id'";
+	    			$q = $db->prepare($sql);
+	    			$insertservice = $q->execute(array(':a'=>$categoryname,':b'=>$categorydetails));
+					if ($insertservice) {
+						echo "<script type= 'text/javascript'>alert('Category Updated Successfully');</script>";
+					}
+					else{
+						echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+					}
+					$db = null;
+				
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+		}
+    }
+
+
+    //Delete Services
+    function DeleteCategory()
+    {
+    	if(isset($_POST["DeleteCategory"])){
+    		include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+				$dbservice = "DELETE FROM asitfa_category WHERE Category_Id = ?";
+				$q = $db->prepare($dbservice);
+				$response = $q->execute(array($id));  
+	        }
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+        }
+    }
+
+
+
+    /*****************************************************************************
+    *****************************ADD COURSE*************************************
+    *****************************************************************************/
+
+    function addCourse(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $coursename = trim($_POST['coursename']);
+            $coursedetails = trim($_POST['coursedetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_course WHERE Course_Name = '$coursename'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Course is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_course (Course_Name, Course_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$coursename,':b'=>$coursedetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Course Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewCourse(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_course");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Course_Id']; ?></td>
+                <td><?php echo $row['Course_Name']; ?></td>
+                <td><?php echo $row['Course_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Course_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Course_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Course_Id']; ?>" tabindex="<?php echo $row['Course_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Course_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Course</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="courseid" value="<?php echo $row['Course_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Course Name</label><span style="color:red;">*</span>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Course_Name']; ?>" name = "coursename" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Course Details</label><span style="color:red;">*</span>
+                                        <textarea id="coursedetails" placeholder="Course Details" class="autosize-transition form-control"  name="coursedetails"><?php echo $row['Course_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatecourse" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Course_Id']; ?>" tabindex="<?php echo $row['Course_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Course_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Course_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteCourse" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateCourse()
+    {
+        if(isset($_POST["updatecourse"])){
+            include('config/dbconnection.php');
+            $id = $_POST['courseid'];
+            $coursename = trim($_POST['coursename']);
+            $coursedetails = trim($_POST['coursedetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_course SET Course_Name = :a, Course_Details= :b WHERE Course_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$coursename,':b'=>$coursedetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Course Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteCourse()
+    {
+        if(isset($_POST["DeleteCourse"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_course WHERE Course_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    /*****************************************************************************
+    *****************************ADD FEE METHOD*************************************
+    *****************************************************************************/
+
+    function addFeeMethod(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $feemethodname = trim($_POST['feemethodname']);
+            $feemethodetails = trim($_POST['feemethoddetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_fee_method WHERE Fee_Method_Name = '$feemethodname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Fee Method is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_fee_method (Fee_Method_Name, Fee_Method_Detail, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$feemethodname,':b'=>$feemethodetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Fee Method Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewFeeMethod(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_fee_method");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Fee_Method_Id']; ?></td>
+                <td><?php echo $row['Fee_Method_Name']; ?></td>
+                <td><?php echo $row['Fee_Method_Detail']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Fee_Method_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+<!--                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Fee_Method_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+ -->                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Fee_Method_Id']; ?>" tabindex="<?php echo $row['Fee_Method_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Fee_Method_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Fee Method</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="feemethodid" value="<?php echo $row['Fee_Method_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Course Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Fee_Method_Name']; ?>" name = "feemethodname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Course Details</label>
+                                        <textarea id="coursedetails" class="autosize-transition form-control"  name="feemethoddetails"><?php echo $row['Fee_Method_Detail']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatefeemethod" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Fee_Method_Id']; ?>" tabindex="<?php echo $row['Fee_Method_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Fee_Method_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Fee_Method_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteFeeMethod" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateFeeMethod()
+    {
+        if(isset($_POST["updatefeemethod"])){
+            include('config/dbconnection.php');
+            $id = $_POST['feemethodid'];
+            $feemethodname = trim($_POST['feemethodname']);
+            $feemethoddetails = trim($_POST['feemethoddetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_fee_method SET Fee_Method_Name = :a, Fee_Method_Detail= :b WHERE Fee_Method_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$feemethodname,':b'=>$feemethoddetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Fee Method Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteFeeMethod()
+    {
+        if(isset($_POST["DeleteFeeMethod"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_fee_method WHERE Fee_Method_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    /*****************************************************************************
+    *****************************ADD CLASS*************************************
+    *****************************************************************************/
+
+    function addClass(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $classname = trim($_POST['classname']);
+            $classdetails = trim($_POST['classdetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_class WHERE Class_Name = '$classname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Class is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_class (Class_Name, Class_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$classname,':b'=>$classdetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Class Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewClass(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_class");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Class_Id']; ?></td>
+                <td><?php echo $row['Class_Name']; ?></td>
+                <td><?php echo $row['Class_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" title="Edit" data-target="#EditModal-<?php echo $row['Class_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" title="Delete" data-target="#DeleteModal-<?php echo $row['Class_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <a href="addSubject.php?classid=<?php echo $row['Class_Id']; ?>" title="Add Subject" class="btn btn-primary btn-sm"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Class_Id']; ?>" tabindex="<?php echo $row['Class_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Class_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Class</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="classid" value="<?php echo $row['Class_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Course Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Class_Name']; ?>" name = "classname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Course Details</label>
+                                        <textarea id="coursedetails" class="autosize-transition form-control"  name="classdetails"><?php echo $row['Class_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updateclass" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Class_Id']; ?>" tabindex="<?php echo $row['Class_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Class_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Class_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteClass" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateClass()
+    {
+        if(isset($_POST["updateclass"])){
+            include('config/dbconnection.php');
+            $id = $_POST['classid'];
+            $classname = trim($_POST['classname']);
+            $classdetails = trim($_POST['classdetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_class SET Class_Name = :a, Class_Details= :b WHERE Class_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$classname,':b'=>$classdetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Class Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteClass()
+    {
+        if(isset($_POST["DeleteClass"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_class WHERE Class_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+
+    /*****************************************************************************
+    *****************************ADD DEPARTMENT*************************************
+    *****************************************************************************/
+
+    function addDepartment(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $departementname = trim($_POST['departementname']);
+            $departmentdetails = trim($_POST['departmentdetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_department WHERE Department_Name = '$departementname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Class is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_department (Department_Name, Department_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$departementname,':b'=>$departmentdetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Department Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewDepartment(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_department");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Department_Id']; ?></td>
+                <td><?php echo $row['Department_Name']; ?></td>
+                <td><?php echo $row['Department_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Department_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Department_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Department_Id']; ?>" tabindex="<?php echo $row['Department_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Department_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Department</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="departmentid" value="<?php echo $row['Department_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Department Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Department_Name']; ?>" name = "departmentname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Department Details</label>
+                                        <textarea id="departmentdetails" class="autosize-transition form-control"  name="departmentdetails"><?php echo $row['Department_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatedepartment" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Department_Id']; ?>" tabindex="<?php echo $row['Department_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Department_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Department_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "Deletedepartment" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateDepartment()
+    {
+        if(isset($_POST["updatedepartment"])){
+            include('config/dbconnection.php');
+            $id = $_POST['departmentid'];
+            $departementname = trim($_POST['departmentname']);
+            $departmentdetails = trim($_POST['departmentdetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_department SET Department_Name = :a, Department_Details= :b WHERE Department_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$departementname,':b'=>$departmentdetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Department Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteDepartment()
+    {
+        if(isset($_POST["Deletedepartment"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_department WHERE Department_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+
+    /*****************************************************************************
+    *****************************ADD Transport*************************************
+    *****************************************************************************/
+
+    function addTransport(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $transportname = trim($_POST['transportname']);
+            $busno = trim($_POST['busno']);
+            $route = trim($_POST['route']);
+            $drivername = trim($_POST['drivername']);
+            $drivercontact = trim($_POST['drivercontact']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_transport WHERE Transport_Name = '$transportname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Transport is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_transport (Transport_Name, Bus_No, Route, Driver_Name, Driver_Contact, Rec_Time_Stamp) VALUES (:a,:b,:c,:d,:e,:f)";
+                    $i = $db->prepare($sql);
+                    $insertservice = $i->execute(array(':a'=>$transportname,':b'=>$busno,':c'=>$route,':d'=>$drivername,':e'=>$drivercontact,':f'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Class Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $i)
+            {
+                echo $i->getMessage();
+            }
+        }
+    }
+
+
+    function viewTransport(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_transport");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Transport_Id']; ?></td>
+                <td><?php echo $row['Transport_Name']; ?></td>
+                <td><?php echo $row['Bus_No']; ?></td>
+                <td><?php echo $row['Route']; ?></td>
+                <td><?php echo $row['Driver_Name']; ?></td>
+                <td><?php echo $row['Driver_Contact']; ?></td>
+
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Transport_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Transport_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                   
+                    
+                </td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Transport_Id']; ?>" tabindex="<?php echo $row['Transport_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Transport_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Trasport Details</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="transportid" value="<?php echo $row['Transport_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Transport Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Transport_Name']; ?>" name = "transportname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Bus No.</label>
+                                        <textarea id="busno" class="autosize-transition form-control"  name="busno"><?php echo $row['Bus_No']; ?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Route</label>
+                                        <textarea id="route" class="autosize-transition form-control"  name="route"><?php echo $row['Route']; ?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Driver Name</label>
+                                        <textarea id="drivername" class="autosize-transition form-control"  name="drivername"><?php echo $row['Driver_Name']; ?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Driver Contact</label>
+                                        <textarea id="drivercontact" class="autosize-transition form-control"  name="drivercontact"><?php echo $row['Driver_Contact']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatetransport" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Transport_Id']; ?>" tabindex="<?php echo $row['Transport_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Transport_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Transport_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteTransport" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateTransport()
+    {
+        if(isset($_POST["updatetransport"])){
+            include('config/dbconnection.php');
+            $id = $_POST['transportid'];
+            $transportname = trim($_POST['transportname']);
+            $busno = trim($_POST['busno']);
+            $route = trim($_POST['route']);
+            $drivername = trim($_POST['drivername']);
+            $drivercontact = trim($_POST['drivercontact']);
+            try {
+
+                
+                    $sql = "UPDATE asitfa_transport SET Transport_Name = :a, Bus_No= :b, Route= :c, Driver_Name= :d, Driver_Contact= :e WHERE Transport_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$transportname,':b'=>$busno,':c'=>$route,':d'=>$drivername,':e'=>$drivercontact));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Transport Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $g)
+            {
+                echo $g->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteTransport()
+    {
+        if(isset($_POST["DeleteTransport"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_transport WHERE Transport_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+
+
+    /*****************************************************************************
+    *****************************ADD BOOK*************************************
+    *****************************************************************************/
+
+    function addBook(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $bookname = trim($_POST['bookname']);
+            $bookwriter = trim($_POST['bookwriter']);
+            $class = trim($_POST['class']);
+            $bookquantity = trim($_POST['bookquantity']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_book WHERE Book_Name = '$bookname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Class is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_book (Book_Name, Book_Writer, Class_Id, Book_Quantity, Rec_Time_Stamp) VALUES (:a,:b,:c,:d,:e)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$bookname,':b'=>$bookwriter,':c'=>$class,':d'=>$bookquantity,':e'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Book Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $q)
+            {
+                echo $q->getMessage();
+            }
+        }
+    }
+
+
+    function viewBook(){
+        include('config/dbconnection.php');
+        require_once('include/function/autoload.php');
+        $dropdownObj = new Dropdown;
+        $result = $db->prepare("SELECT * FROM asitfa_book");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            
+                <tr class="record">
+                    <td><?php echo $row['Book_Id']; ?></td>
+                    <td><?php echo $row['Book_Name']; ?></td>
+                    <td><?php echo $row['Book_Writer']; ?></td>
+                    <td><?php echo $row['Class_Id']; ?></td>
+                    <td><?php echo $row['Book_Quantity']; ?></td>
+                    <td>
+                        <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Book_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Book_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </td>
+                    <td class="hidden-sm hidden-md hidden-lg"></td>
+                </tr>
+                <div class="col-lg-12">
+                    <div class="modal fade" id="EditModal-<?php echo $row['Book_Id']; ?>" tabindex="<?php echo $row['Book_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Book_Id']; ?>" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="H2">Update Book Details</h4>
+                                </div>
+                                <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                    <div class="modal-body">
+                                        <input type="hidden" name="bookidid" value="<?php echo $row['Book_Id']; ?>">
+                                        <div class="form-group">
+                                            <label>Book Name</label>
+                                            <input type="text" class="form-control" value = "<?php echo $row['Book_Name']; ?>" name = "bookname" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Book Writer</label>
+                                            <textarea id="bookwriter" class="autosize-transition form-control"  name="bookwriter"><?php echo $row['Book_Writer']; ?></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Class</label>
+                                                <select class="form-control" id="class" name="class"> 
+                                                    <option value="">Select Class</option>
+                                                       <?php $dropdownObj->classDropdown(); ?>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Book Quantity</label>
+                                            <textarea id="bookquantity" class="autosize-transition form-control"  name="bookquantity"><?php echo $row['Book_Quantity']; ?></textarea>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" name = "updatetransport" > Update</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="DeleteModal-<?php echo $row['Book_Id']; ?>" tabindex="<?php echo $row['Book_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Book_Id']; ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                                </div>
+                                <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                    <input type="hidden" name="id" value="<?php echo $row['Transport_Id']; ?>">
+                                    <div class="modal-body">
+                                        <button type="submit" class="btn btn-danger" name = "DeleteTransport" >Delete</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php   
+            // }
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateBook()
+    {
+        if(isset($_POST["updatebook"])){
+            include('config/dbconnection.php');
+            $id = $_POST['bookid'];
+            $bookname = trim($_POST['bookname']);
+            $bookwriter = trim($_POST['bookwriter']);
+            $class = trim($_POST['class']);
+            $bookquantity = trim($_POST['bookquantity']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_book SET Book_Name = :a, Book_Writer= :b, Class_Id= :c, Book_Quantity= :d WHERE Book_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$bookname,':b'=>$bookwriter,':c'=>$bookwriter,':d'=>$bookwriter));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Book Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteBook()
+    {
+        if(isset($_POST["Deletebook"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_book WHERE Book_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+
+
+    /*****************************************************************************
+    *****************************ADD EXAM*************************************
+    *****************************************************************************/
+
+    function addExam(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $examname = trim($_POST['examname']);
+            $examdetails = trim($_POST['examdetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_exam WHERE Exam_Name = '$examname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Class is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_exam (Exam_Name, Exam_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$examname,':b'=>$examdetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Class Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewExam(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_exam");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Exam_Id']; ?></td>
+                <td><?php echo $row['Exam_Name']; ?></td>
+                <td><?php echo $row['Exam_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Exam_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Exam_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <a href="addSubject.php?classid=<?php echo $row['Exam_Id']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Exam_Id']; ?>" tabindex="<?php echo $row['Exam_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Exam_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Exam</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="examid" value="<?php echo $row['Exam_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Exam Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Exam_Name']; ?>" name = "examname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Exam Details</label>
+                                        <textarea id="examdetails" class="autosize-transition form-control"  name="examdetails"><?php echo $row['Exam_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updateexam" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Exam_Id']; ?>" tabindex="<?php echo $row['Exam_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Exam_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="examid" value="<?php echo $row['Exam_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteExam" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateExam()
+    {
+        if(isset($_POST["updateexam"])){
+            include('config/dbconnection.php');
+            $examid = $_POST['examid'];
+            $examname = trim($_POST['examname']);
+            $examdetails = trim($_POST['examdetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_exam SET Exam_Name = :a, Exam_Details= :b WHERE Exam_Id = '$examid'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$examname,':b'=>$examdetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Class Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteExam()
+    {
+        if(isset($_POST["DeleteExam"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_exam WHERE Exam_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+
+
+
+    /*****************************************************************************
+    *****************************ADD FEE DEPOSIT METHOD*************************************
+    *****************************************************************************/
+
+    function addDepositMethod(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $depositmethod = trim($_POST['depositmethod']);
+            $depositmethoddetails = trim($_POST['depositmethoddetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_deposit_method WHERE Deposit_Method_Name = '$depositmethod'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Deposit Method is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_deposit_method (Deposit_Method_Name, Deposit_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$depositmethod,':b'=>$depositmethoddetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Deposit Method Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewDepositMethod(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_deposit_method");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Deposit_Method_Id']; ?></td>
+                <td><?php echo $row['Deposit_Method_Name']; ?></td>
+                <td><?php echo $row['Deposit_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Deposit_Method_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+<!--                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Deposit_Method_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+ -->                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Deposit_Method_Id']; ?>" tabindex="<?php echo $row['Deposit_Method_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Deposit_Method_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Fee Method</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="depositmethodid" value="<?php echo $row['Deposit_Method_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Deposit Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Deposit_Method_Name']; ?>" name = "depositmethodname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Deposit Details</label>
+                                        <textarea id="coursedetails" class="autosize-transition form-control"  name="depositmethoddetails"><?php echo $row['Deposit_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatedepositmethod" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Deposit_Method_Id']; ?>" tabindex="<?php echo $row['Deposit_Method_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Deposit_Method_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Deposit_Method_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteDepositMethod" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateDepositMethod()
+    {
+        if(isset($_POST["updatedepositmethod"])){
+            include('config/dbconnection.php');
+            $id = $_POST['depositmethodid'];
+            $depositmethodname = trim($_POST['depositmethodname']);
+            $depositmethoddetails = trim($_POST['depositmethoddetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_deposit_method SET Deposit_Method_Name = :a, Deposit_Details= :b WHERE Deposit_Method_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$depositmethodname,':b'=>$depositmethoddetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Deposit Method Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteDepositMethod()
+    {
+        if(isset($_POST["DeleteDepositMethod"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_deposit_method WHERE Deposit_Method_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+        function UpdateProfile()
+    {
+        if(isset($_POST["updateprofile"])){
+            include('config/dbconnection.php');
+            $userid = trim($_POST['userid']);
+            $username = trim($_POST['username']);
+            $contact = trim($_POST['contact']);
+            $emailid = trim($_POST['emailid']);
+            
+            try {
+                $sql = "UPDATE asitfa_user SET User_Name = :a, User_Contact = :b, User_Email = :c WHERE User_Id = $userid";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$username,':b'=>$contact,':c'=>$emailid));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Profile Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+            function ChangePassword()
+    {
+        if(isset($_POST["changepassword"])){
+            include('config/dbconnection.php');
+            $userid = trim($_POST['userid']);
+            $password = Md5(trim($_POST['password'])); 
+            
+            try {
+
+                    $sql = "UPDATE asitfa_user SET User_Password = :a WHERE User_Id = $userid";
+                    $q = $db->prepare($sql);
+                    $insertpassword = $q->execute(array(':a'=>$password));
+                    if ($insertpassword) {
+                        echo "<script type= 'text/javascript'>alert('Password Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Password not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    /*****************************************************************************
+    *****************************ADD ACADEMIC YEAR*************************************
+    *****************************************************************************/
+
+    function addAcademic(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $astartyear = trim($_POST['astartyear']);
+            $academicdetails = trim($_POST['academicdetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+               
+                    $sql = "INSERT INTO asitfa_academicyear (Academic_StartYear, Academic_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$astartyear,':b'=>$academicdetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Academic Session Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewAcademic(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_academicyear");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Academic_Id']; ?></td>
+                <td><?php echo $row['Academic_StartYear']; ?></td>
+               
+                <td><?php echo $row['Academic_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Academic_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Academic_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    
+                </td>
+                
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Academic_Id']; ?>" tabindex="<?php echo $row['Academic_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Academic_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Academic Session</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="academicid" value="<?php echo $row['Academic_Id']; ?>">
+                                    <div class="form-group ">
+                                        <label>Academic Session</label>
+                                        <input type="text" class="form-control date-picker" placeholder="dd-mm-yyyy" data-date-format="dd-mm-yyyy" value = "<?php echo $row['Academic_StartYear']; ?>" name = "astartyear" required/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Academic Details</label>
+                                        <textarea id="coursedetails" class="autosize-transition form-control"  name="academicdetails"><?php echo $row['Academic_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updateacademic" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Academic_Id']; ?>" tabindex="<?php echo $row['Academic_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Academic_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="academicid">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="academicid" value="<?php echo $row['Academic_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteAcademy" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateAcademic()
+    {
+        if(isset($_POST["updateacademic"])){
+            include('config/dbconnection.php');
+            $academicid = $_POST['academicid'];
+            $astartyear = trim($_POST['astartyear']);
+            $astartyears = date("Y-m-d", strtotime($astartyear));
+            $academicdetails = trim($_POST['academicdetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_academicyear SET Academic_StartYear = :a, Academic_Details= :b WHERE Academic_Id = '$academicid'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$astartyears,':b'=>$academicdetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Year Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteAcademic()
+    {
+        if(isset($_POST["DeleteAcademy"])){
+            include('config/dbconnection.php');
+            $academicid = $_POST['academicid'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_academicyear WHERE Academic_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($academicid));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    /*****************************************************************************
+    *****************************ADD SUBJECT*************************************
+    *****************************************************************************/
+
+    function addSubject(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $classid = trim($_POST['classid']);
+            $subjectname = trim($_POST['subjectname']);
+            $subjectdetails = trim($_POST['subjectdetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                    $sql = "INSERT INTO asitfa_subject (Class_Id, Subject_Name, Subject_Details, Rec_Time_Stamp) VALUES (:a,:b,:c,:d)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$classid,':b'=>$subjectname,':c'=>$subjectdetails,':d'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Class Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewSubject($classid){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_subject where Class_Id = $classid");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Subject_Id']; ?></td>
+                <td><?php echo $row['Subject_Name']; ?></td>
+                <td><?php echo $row['Subject_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#EditModal-<?php echo $row['Subject_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-<?php echo $row['Subject_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Subject_Id']; ?>" tabindex="<?php echo $row['Subject_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Subject_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Fee Method</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="subjectid" value="<?php echo $row['Subject_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Subject Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Subject_Name']; ?>" name = "subjectname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Subject Details</label>
+                                        <textarea id="coursedetails" class="autosize-transition form-control"  name="subjectdetails"><?php echo $row['Subject_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatesubject" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Subject_Id']; ?>" tabindex="<?php echo $row['Subject_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Subject_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="subjectid" value="<?php echo $row['Subject_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteSubject" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateSubject()
+    {
+        if(isset($_POST["updatesubject"])){
+            include('config/dbconnection.php');
+            $subjectid = $_POST['subjectid'];
+            $subjectname = trim($_POST['subjectname']);
+            $subjectdetails = trim($_POST['subjectdetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_subject SET Subject_Name = :a, Subject_Details= :b WHERE Subject_Id = '$subjectid'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$subjectname,':b'=>$subjectdetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Class Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteSubject()
+    {
+        if(isset($_POST["DeleteSubject"])){
+            include('config/dbconnection.php');
+            $subjectid = $_POST['subjectid'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_subject WHERE Subject_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($subjectid));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    /*****************************************************************************
+    *****************************ASSIGN INCHARGE*************************************
+    *****************************************************************************/
+
+    function assignIncharge(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $class = trim($_POST['class']);
+            $staffname = trim($_POST['staffname']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_incharge WHERE Class_Id = '$class'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Incharge is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_incharge (Class_Id, Staff_Id, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$class,':b'=>$staffname,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Incharge Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewIncharge(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_incharge");
+        $result->execute();
+         for($i=0; $row = $result->fetch(); $i++){ 
+            $classid = $row['Class_Id'];
+            $resultClass = $db->prepare("SELECT Class_Name FROM asitfa_class WHERE Class_Id = $classid");
+            $resultClass->execute();
+
+             for($i=0; $rowclass = $resultClass->fetch(); $i++){ 
+                $staffid = $row['Staff_Id'];
+                $resultstaff = $db->prepare("SELECT Staff_Name FROM asitfa_staff WHERE Staff_Id = $staffid");
+                $resultstaff->execute();
+                  for($i=0; $rowstaff = $resultstaff->fetch(); $i++){ 
+
+
+            ?>
+            <tr class="record">
+                <td><?php echo $row['Incharge_Id']; ?></td>
+                <td><?php echo $rowclass['Class_Name']; ?></td>
+                <td><?php echo $rowstaff['Staff_Name']; ?></td>
+                <td>
+                    
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" title="Delete" data-target="#DeleteModal-<?php echo $row['Incharge_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                   
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+               
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Incharge_Id']; ?>" tabindex="<?php echo $row['Incharge_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Incharge_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Incharge_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteIncharge" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+}
+}
+    // Start Update Gym Services
+
+
+    //Delete Services
+    function DeleteIncharge()
+    {
+        if(isset($_POST["DeleteIncharge"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_incharge WHERE Incharge_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    /*****************************************************************************
+    *****************************ADD CERTIFICATES*************************************
+    *****************************************************************************/
+
+    function addCertificates(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $certificatesname = trim($_POST['certificatesname']);
+            $certificatesdetails = trim($_POST['certificatesdetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_certificates WHERE Certificate_Name = '$certificatesname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Certificates is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_certificates (Certificate_Name, Certificates_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$certificatesname,':b'=>$certificatesdetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Certificates Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewCertificates(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_certificates");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Certificates_Id']; ?></td>
+                <td><?php echo $row['Certificate_Name']; ?></td>
+                <td><?php echo $row['Certificates_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" title="Edit" data-target="#EditModal-<?php echo $row['Certificates_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" title="Delete" data-target="#DeleteModal-<?php echo $row['Certificates_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Certificates_Id']; ?>" tabindex="<?php echo $row['Certificates_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Certificates_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Certificates</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="certificateid" value="<?php echo $row['Certificates_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Certificate Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Certificate_Name']; ?>" name = "certificatesname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Certificate Details</label>
+                                        <textarea id="certificatesdetails" class="autosize-transition form-control"  name="certificatesdetails"><?php echo $row['Certificates_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatecertificate" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Certificates_Id']; ?>" tabindex="<?php echo $row['Certificates_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Certificates_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Certificates_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteCertificate" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateCertificate()
+    {
+        if(isset($_POST["updatecertificate"])){
+            include('config/dbconnection.php');
+            $id = $_POST['certificateid'];
+            $certificatesname = trim($_POST['certificatesname']);
+            $certificatesdetails = trim($_POST['certificatesdetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_certificates SET Certificate_Name = :a, Certificates_Details= :b WHERE Certificates_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$certificatesname,':b'=>$certificatesdetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Certificate Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteCertificate()
+    {
+        if(isset($_POST["DeleteCertificate"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_certificates WHERE Certificates_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+
+    /*****************************************************************************
+    *****************************ADD STAFF CERTIFICATES*************************************
+    *****************************************************************************/
+
+    function addStaffCertificates(){
+        if(isset($_POST["submit"])){
+            include('config/dbconnection.php');
+            $certificatesname = trim($_POST['certificatesname']);
+            $certificatesdetails = trim($_POST['certificatesdetails']);
+            $RecTimeStamp = Date("Y/m/d H:m:s");
+            try {
+
+                $dbservice = $db->query("SELECT * FROM asitfa_Staffcertificates WHERE Certificate_Name = '$certificatesname'");
+                $getservice = $dbservice->fetch(PDO::FETCH_ASSOC);
+                if($getservice>0)
+                {
+                    echo "<script>alert('Sorry, Certificates is already exist')</script>";
+                }
+                else{
+                    $sql = "INSERT INTO asitfa_Staffcertificates (Certificate_Name, Certificates_Details, Rec_Time_Stamp) VALUES (:a,:b,:c)";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$certificatesname,':b'=>$certificatesdetails,':c'=>$RecTimeStamp));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Certificates Inserted Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Inserted.');</script>";
+                    }
+                    $db = null;
+                }
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+    function viewStaffCertificates(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_Staffcertificates");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr class="record">
+                <td><?php echo $row['Certificates_Id']; ?></td>
+                <td><?php echo $row['Certificate_Name']; ?></td>
+                <td><?php echo $row['Certificates_Details']; ?></td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" title="Edit" data-target="#EditModal-<?php echo $row['Certificates_Id']; ?>"/><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" title="Delete" data-target="#DeleteModal-<?php echo $row['Certificates_Id']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    
+                    
+                </td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+                <td class="hidden-sm hidden-md hidden-lg"></td>
+            </tr>
+            <div class="col-lg-12">
+                <div class="modal fade" id="EditModal-<?php echo $row['Certificates_Id']; ?>" tabindex="<?php echo $row['Certificates_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Certificates_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Update Certificates</h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <div class="modal-body">
+                                    <input type="hidden" name="certificateid" value="<?php echo $row['Certificates_Id']; ?>">
+                                    <div class="form-group">
+                                        <label>Certificate Name</label>
+                                        <input type="text" class="form-control" value = "<?php echo $row['Certificate_Name']; ?>" name = "certificatesname" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Certificate Details</label>
+                                        <textarea id="certificatesdetails" class="autosize-transition form-control"  name="certificatesdetails"><?php echo $row['Certificates_Details']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" name = "updatecertificate" > Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="DeleteModal-<?php echo $row['Certificates_Id']; ?>" tabindex="<?php echo $row['Certificates_Id']; ?>" role="dialog" aria-labelledby="myModalLabel-<?php echo $row['Certificates_Id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="H2">Are you sure want to delete this record? </h4>
+                            </div>
+                            <form role="form" method="post" class="form-horizontal" id="popup-validation">
+                                <input type="hidden" name="id" value="<?php echo $row['Certificates_Id']; ?>">
+                                <div class="modal-body">
+                                    <button type="submit" class="btn btn-danger" name = "DeleteCertificate" >Delete</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php   
+        }
+    }
+
+    // Start Update Gym Services
+    function UpdateStaffCertificate()
+    {
+        if(isset($_POST["updatecertificate"])){
+            include('config/dbconnection.php');
+            $id = $_POST['certificateid'];
+            $certificatesname = trim($_POST['certificatesname']);
+            $certificatesdetails = trim($_POST['certificatesdetails']);
+            
+            try {
+
+                
+                    $sql = "UPDATE asitfa_Staffcertificates SET Certificate_Name = :a, Certificates_Details= :b WHERE Certificates_Id = '$id'";
+                    $q = $db->prepare($sql);
+                    $insertservice = $q->execute(array(':a'=>$certificatesname,':b'=>$certificatesdetails));
+                    if ($insertservice) {
+                        echo "<script type= 'text/javascript'>alert('Certificate Updated Successfully');</script>";
+                    }
+                    else{
+                        echo "<script type= 'text/javascript'>alert('Data not successfully Updated.');</script>";
+                    }
+                    $db = null;
+                
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    //Delete Services
+    function DeleteStaffCertificate()
+    {
+        if(isset($_POST["DeleteCertificate"])){
+            include('config/dbconnection.php');
+            $id = $_POST['id'];
+            try {
+
+                $dbservice = "DELETE FROM asitfa_Staffcertificates WHERE Certificates_Id = ?";
+                $q = $db->prepare($dbservice);
+                $response = $q->execute(array($id));  
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+
+
+
+}

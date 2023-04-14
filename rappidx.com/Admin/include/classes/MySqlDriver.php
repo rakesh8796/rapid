@@ -1,0 +1,482 @@
+<?php
+	global $config;
+	require_once("config/dbconnection.php");
+	//require_once("config/tables.php");
+	class MySqlDriver implements DB
+	{
+		var $sql;
+		var $rs;
+		var $numrows;
+		var $limit;
+    	var $noofpage;
+		var $offset;
+		var $page;
+		var $style;
+		var $parameter;
+		var $activestyle;
+		var $buttonstyle;
+		private $host;
+		private $user;
+		private $pass;
+		private $database;
+		private $cnx;
+
+	    function __construct() {
+		    global $config;
+			$this->host = $config['server'];
+			$this->user = $config['user'];
+			$this->pass = $config['pass'];
+			$this->database = $config['database'];
+
+	    	$db = $this->cnx = new PDO('mysql:host='.$this->host.';dbname='.$this->database, $this->user, $this->pass);
+			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	    }
+
+		// Select Query
+		function selectQry($table,$condition,$limitS,$limitE)
+		{
+			if(!$condition){
+				if((!$limitS) && (!$limitE))
+					$sql="select * from ".$table;
+				else
+					$sql="select * from ".$table." limit ".$limitS.", ".$limitE;
+			}
+			else {
+				if((!$limitS) && (!$limitE))
+					$sql="select * from ".$table." where ".$condition;
+				else
+					$sql="select * from ".$table." where ".$condition." limit ".$limitS.", ".$limitE;
+			}
+	      // echo $sql;
+		   //die();
+			$dataSet=$this->executeQry($sql);
+			return $dataSet;
+		}
+	
+
+
+
+
+		function executeQry($sql)
+		{
+			if (!is_string($sql)) {
+	            //throw new Exception("Illegal parameter. Must be string.");
+				die("Illegal parameter. Must be string.");
+	        }
+			else {
+			$rsSet = mysqli_query($GLOBALS["___mysqli_ston"], $sql);
+			}
+			if (!$rsSet) 
+				//$this->throwMysqlException();
+				die(@mysqli_errno($GLOBALS["___mysqli_ston"]));			
+			else
+				return $rsSet;
+		}
+	
+		function insert_id()
+		{
+			return ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+		}
+	
+		function deleteval($tbl,$con){
+			//$this->dbConnect();
+		     $sql="delete from ".$tbl." where ".$con; 
+			$result=mysqli_query($GLOBALS["___mysqli_ston"], $sql) or die(mysqli_error($GLOBALS["___mysqli_ston"])); 
+		}	
+
+		function getResultRow($DataSet)
+		{
+			return mysqli_fetch_array($DataSet);
+		}
+
+		function getResultObject($DataSet) 
+		{
+			return mysqli_fetch_object($DataSet);
+		}
+
+		function getTotalRow($DataSet) {
+			return mysqli_num_rows($DataSet);
+		}
+
+		function addParameter($param)
+		{
+			$allParam=$allParam;
+		}
+	
+
+
+
+		function fetchValue($tbl, $field, $con)
+		{
+		$sql="select ".$field." from ".$tbl." where ".$con;
+		$result=mysqli_query($GLOBALS["___mysqli_ston"], $sql) or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+		$rows=mysqli_num_rows($result);
+		$rec=mysqli_fetch_object($result);
+		$val=$rec->$field;
+		return $val;	
+		}
+
+	    function updateValue($tbl,$con,$val)
+	    {
+			$sql="update ".$tbl." set ".$val." where ".$con;
+			$result=mysqli_query($GLOBALS["___mysqli_ston"], $sql) or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+	    }	
+
+	    function singleValue($tbl,$con)
+	    {
+		  	$sql="select * from ".$tbl." where ".$con;
+	        $result=mysqli_query($GLOBALS["___mysqli_ston"], $sql) or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+			$rec=mysqli_fetch_object($result);
+		    return $rec;	
+	    }
+
+	    function deleteRec($table,$condition)
+	    {
+
+			if(!$condition){
+				$sql="delete from ".$table;
+			}
+			else{
+				$sql="delete from ".$table." where ".$condition;
+			}
+	    //echo $sql;
+	    //exit;
+	    $dataSet=$this->executeQry($sql);
+			return $dataSet;
+	    }
+	
+	
+		///// Alok Changes 
+
+	function updateTable($table, $pk, $pkval,$post)
+	{
+	    $query = "UPDATE ".$table." SET ";
+	    $trigger = 0;
+	    foreach($post as $field => $value){
+			if(substr($field,0,3) == "db_"){
+				$field = str_replace("db_","",$field);
+				$field." = ".$value."<br><br>";
+			    $value = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $value);
+				if($trigger > 0) $query = $query . ", ";
+			    $query = $query . $field." = trim('$value')";
+			    $trigger++;
+	    	}
+		}
+	    $query = $query . " WHERE ".$pk." = '$pkval'";    
+	   	// echo $query."<br><br>";exit;
+	    if($result = mysqli_query($GLOBALS["___mysqli_ston"], $query)) return(0);
+	    else echo(mysqli_error($GLOBALS["___mysqli_ston"]));
+	}	
+	
+
+
+	function getMySqlColumns($table) 
+	{
+	  	$query = "SELECT * FROM {$table} LIMIT 1";
+	  	$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+	  	$row = mysqli_fetch_assoc($result);
+	  	$columns = array_keys($row);
+	  	return $columns;
+	}
+
+ 	function mysql_column_names($table) {
+ 		return $this->getMySqlColumns($table);
+	}
+	
+	// Paging Test	
+	
+	function paging($query) {
+		$this->offset=0;
+		$this->page=1;
+		$this->sql=$query;
+		$this->rs=mysqli_query($GLOBALS["___mysqli_ston"], $this->sql);
+		$this->numrows=mysqli_num_rows($this->rs);
+	}
+	function getNumRows() {
+		return $this->numrows;
+	}
+	function setLimit($no) {
+        if($no)  
+		$this->limit=$no;
+		else
+		$this->limit=10;
+	}
+	function getLimit() {
+		return $this->limit;
+	}
+	function getNoOfPages() {
+		return ceil($this->noofpage=($this->getNumRows()/$this->getLimit()));
+	}
+	function getPageNo() {
+		$str="";
+		$str=$str."<table width='100%' border='0' align='right'><tr>";
+		$str=$str."<td width='100%' align='right' valign='top' height='25'>";
+		if($this->getPage()>1) {
+			$str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".($this->getPage()-1).$this->getParameter()."' class='".$this->getStyle()."'>Prev </a>|&nbsp;";
+		}
+		if($this->getPage() > 6)
+		{   
+		    $l = 1;
+			for($i=$this->getPage()-1;$i>0;$i--) {
+				$arr[] = "<a href='".$_SERVER['PHP_SELF']."?page=".$i.$this->getParameter()."' class='".$this->getStyle()."'>".$i."</a>&nbsp;";
+				if($l == 5)
+				break;
+				$l++;
+			}
+			if($this->getNoOfPages()-$this->getPage() < 5)
+			{
+			   $start = $i -1;
+			   $diff = $this->getNoOfPages()-$this->getPage();
+			   $loop = 5-$diff;
+			   for($m = 1; $m<=$loop; $m++) {
+			     if($start>0)
+			     $arr[] = "<a href='".$_SERVER['PHP_SELF']."?page=".$start.$this->getParameter()."' class='".$this->getStyle()."'>".$start."</a>&nbsp;"; 
+			     $start--;
+				} 
+			}
+			$arrrev = array_reverse($arr);
+			foreach($arrrev as $val)
+			  $str = $str.$val;
+		}
+			
+		$current = $this->getPage();
+		if($current > 6)
+		{   
+		    $k = 1;
+			for($i=$current;$i<=$this->getNoOfPages();$i++) {
+				if($i==$this->getPage()) {
+					$str=$str."<span class='".$this->getActiveStyle()."'>".$i."&nbsp;</span>";
+				}
+				else {
+					$str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".$i.$this->getParameter()."' class='".$this->getStyle()."'>".$i."</a>&nbsp;";
+				}
+				if($k == 6)
+				break;
+				$k++;
+			}
+		}
+		else
+		{
+			$j = 1;
+			for($i=1;$i<=$this->getNoOfPages();$i++) {
+				if($i==$this->getPage()) {
+					$str=$str."<span class='".$this->getActiveStyle()."'>".$i."&nbsp;</span>";
+				}
+				else {
+					$str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".$i.$this->getParameter()."' class='".$this->getStyle()."'>".$i."</a>&nbsp;";
+				}
+			   if($j == 11)
+			   break;
+			   $j++;
+			}
+		  	if($this->getNoOfPages() > $i+1)
+		  	{
+		   	 	$str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".($i+1).$this->getParameter()."' class='".$this->getStyle()."'>.. </a>";
+		  	}
+		}
+			
+		if($this->getPage()<$this->getNoOfPages()) {
+			$str=$str."|<a href='".$_SERVER['PHP_SELF']."?page=".($this->getPage()+1).$this->getParameter()."' class='".$this->getStyle()."'> Next</a>";
+		}
+		$str=$str."</td>";
+		$str=$str."</tr></table>";
+		return $str;
+	}
+	
+	function getPageNo1() {
+		$str="";
+		$str=$str."<table   border='0' cellspacing='0' cellpadding='0'><tr>";
+		$str=$str."<td width='100%'  valign='top' >";
+		$str=$str."<span class='blacktext2'><a href='".$_SERVER['PHP_SELF']."?limit=". $this->numrows."&".$this->getParameter()."' class='blacktext2'> View All</a>&nbsp;|&nbsp;</span>";
+		
+		if($this->getPage()>1) {
+			$str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".($this->getPage()-1).$this->getParameter()."' class='".$this->getStyle()."'>Prev </a>|&nbsp;";
+		}
+		
+		if($this->getPage() > 6)
+		{   
+		    $l = 1;
+			for($i=$this->getPage()-1;$i>0;$i--) {
+				$arr[] = "<a href='".$_SERVER['PHP_SELF']."?page=".$i.$this->getParameter()."' class='".$this->getStyle()."'>".$i."</a>&nbsp;";
+				if($l == 5)
+				break;
+				$l++;
+			}
+			if($this->getNoOfPages()-$this->getPage() < 5)
+			{
+			   $start = $i -1;
+			   $diff = $this->getNoOfPages()-$this->getPage();
+			   $loop = 5-$diff;
+			   for($m = 1; $m<=$loop; $m++) {
+			     if($start>0)
+			     $arr[] = "<a href='".$_SERVER['PHP_SELF']."?page=".$start.$this->getParameter()."' class='".$this->getStyle()."'>".$start."</a>&nbsp;"; 
+			     $start--;
+				} 
+			}
+			$arrrev = array_reverse($arr);
+			foreach($arrrev as $val)
+			  $str = $str.$val;
+		}
+		
+		$current = $this->getPage();
+		if($current > 6)
+		{   
+		    $k = 1;
+			for($i=$current;$i<=$this->getNoOfPages();$i++) {
+				if($i==$this->getPage()) {
+					$str=$str."<span class='".$this->getActiveStyle()."'>".$i."&nbsp;</span>";
+				}
+				else {
+					$str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".$i.$this->getParameter()."' class='".$this->getStyle()."'>".$i."</a>&nbsp;";
+				}
+				if($k == 6)
+				break;
+				$k++;
+			}
+		}
+		else
+		{
+			$j = 1;
+			for($i=1;$i<=$this->getNoOfPages();$i++) {
+				if($i==$this->getPage()) {
+					$str=$str."<span class='".$this->getActiveStyle()."'>".$i."&nbsp;</span>";
+				}
+				else {
+					$str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".$i.$this->getParameter()."' class='".$this->getStyle()."'>".$i."</a>&nbsp;";
+				}
+			   if($j == 11)
+			   break;
+			   $j++;
+			}
+		  if($this->getNoOfPages() > $i+1)
+		  {
+		    $str=$str."<a href='".$_SERVER['PHP_SELF']."?page=".($i+1).$this->getParameter()."' class='".$this->getStyle()."'>.. </a>";
+		  }
+
+		
+		}
+		
+		if($this->getPage()<$this->getNoOfPages()) {
+			$str=$str."|<a href='".$_SERVER['PHP_SELF']."?page=".($this->getPage()+1).$this->getParameter()."' class='".$this->getStyle()."'> Next</a>";
+		}
+		$str=$str."</td>";
+		$str=$str."</tr></table>";
+		return $str;
+	}
+	
+	function getOffset($page) {
+		if($page>$this->getNoOfPages()) {
+			$page=$this->getNoOfPages();
+		}
+		if($page=="") {
+			$this->page=1;
+			$page=1;
+		}
+		else {
+			$this->page=$page;
+		}
+		if($page=="1") {
+			$this->offset=0;
+			return $this->offset;
+		}
+		else {
+			for($i=2;$i<=$page;$i++) {
+				$this->offset=$this->offset+$this->getLimit();
+			}
+			return $this->offset;
+		}
+	}
+	function getPage() {
+		return $this->page;
+	}
+	function setStyle($style) {
+		$this->style=$style;
+	}
+	function getStyle() {
+		return $this->style;
+	}
+	function setActiveStyle($style) {
+		$this->activestyle=$style;
+	}
+	function getActiveStyle() {
+		return $this->activestyle;
+	}
+	function setButtonStyle($style) {
+		$this->buttonstyle=$style;
+	}
+	function getButtonStyle() {
+		return $this->buttonstyle;
+	}
+	function setParameter($parameter) {
+		$this->parameter=$parameter;
+	}
+	function getParameter() {
+		return $this->parameter;
+	}
+	
+	
+	function getQueryString()
+	{
+	  	$queryString_arr = explode('&',$_SERVER['QUERY_STRING']);
+	  	$queryStringNew = "";  
+	  	if(count($queryString_arr) > 0)
+	  	{ 
+	   		$srchString = "age=";
+	   		$srchStringLimit = "imit=";
+	   		foreach($queryString_arr as $queryString_arr2)
+	   		{
+	    		$posString = strpos($queryString_arr2,$srchString);
+	    		$posStringLim = strpos($queryString_arr2,$srchStringLimit);    
+	    		if($posString != 1 && $queryString_arr2 != '')
+	    		$queryStringNew .= "&".$queryString_arr2;
+	   		}
+	   		//echo  $queryStringNew; exit;
+	  	} 
+	  	/*if($_GET['limit'] != '') {
+	    	$queryStringNew .= "&limit=".$_GET['limit'];   
+	  	}*/
+	  	return $queryStringNew;
+	}
+
+	public function errno() 
+	{ 
+		return mysqli_errno($this->link); 
+	} 
+	public function error() 
+	{ 
+		return mysqli_error($this->link); 
+	} 
+	public static function escape_string($string) 
+	{ 
+		return mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $string); 
+	} 
+	public function query($query) 
+	{ 
+		return mysqli_query($GLOBALS["___mysqli_ston"], $query); 
+	} 
+	public function fetch_array($result, $array_type = MYSQLI_BOTH) 
+	{ 
+		return mysqli_fetch_array($result,  $array_type); 
+	} 
+	public function fetch_row($result) 
+	{ 
+	   return mysqli_fetch_row($result); 
+	} 
+	public function fetch_assoc($result) 
+	{ 
+	   return mysqli_fetch_assoc($result); 
+	} 
+	public function fetch_object($result) 
+	{ 
+	   return mysqli_fetch_object($result); 
+	} 
+	public function num_rows($result) 
+	{ 
+	   return mysqli_num_rows($result); 
+	} 
+	public function curPageInfo() {
+    return substr($_SERVER["REQUEST_URI"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
+	}
+
+}
+?>

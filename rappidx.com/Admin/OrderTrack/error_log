@@ -1,0 +1,24 @@
+[05-Jan-2023 18:21:32 Asia/Kolkata] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php:228
+Stack trace:
+#0 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php on line 228
+[05-Jan-2023 18:21:44 Asia/Kolkata] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php:228
+Stack trace:
+#0 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php on line 228
+[05-Jan-2023 18:21:45 Asia/Kolkata] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php:228
+Stack trace:
+#0 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php on line 228
+[05-Jan-2023 18:21:46 Asia/Kolkata] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php:228
+Stack trace:
+#0 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php on line 228
+[08-Jan-2023 15:32:59 Asia/Kolkata] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php:103
+Stack trace:
+#0 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php on line 103
+[08-Jan-2023 15:33:03 Asia/Kolkata] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php:103
+Stack trace:
+#0 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/Admin/OrderTrack/OrderTracking.php on line 103

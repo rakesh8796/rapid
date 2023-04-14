@@ -1,0 +1,4 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Domar Basar,"H.NO E-52, Nyigam village, Near Shiv Mandir, Basar",7630865136,791101,#4331,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AR,Basar,,0.205,0,4144,,,,,,,,COD
+Syed Sarfaraz Alam,"H.No 145, Nakhas Khona, Near Kotwali, Allahabad",8299450049,211003,#4332,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,UP,Allahabad,,0.205,0,4144,,,,,,,,COD
+Veeramani,"H.No 1-19, Near Sydicate Bank, Shiva Line Street, Divili",9966885297,533433,#4333,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AP,Divili,,0.205,0,4144,,,,,,,,COD

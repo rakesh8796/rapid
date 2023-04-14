@@ -1,0 +1,4 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Rah Umer,"Meerak Shah Colney, Habak Crossing",9906484144    ,190006,IWEX902623,Seasonal Sale Is Live,1,20,15,8,1299,1299,JK,Srinagar,,0.205,1299,4187,,,,,,,,COD
+Peer Mushtaq ,Jamma masjid Pattan ,7006688701    ,190011,IWEX902619,Seasonal Sale Is Live,1,20,15,8,1299,1299,JK,Ok,,0.205,1299,4187,,,,,,,,COD
+Mohd Asid Khan,"Ward no 07 rajouri, Rajouri",7006108097    ,185131,IWEX902578,Seasonal Sale Is Live,1,20,15,8,1299,1299,JK,Rajouri,,0.205,1299,4187,,,,,,,,COD

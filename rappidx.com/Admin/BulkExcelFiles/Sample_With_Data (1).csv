@@ -1,0 +1,2 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Waight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city
+Saurabh,Varanasi,7676767788,110001,11,Laptop,10,10,21,22,3450,0,Delhi,Chandani Chauk,,300,100,14,pickup name,9876543210,560007,1567GS,address 1,state 21,city 32

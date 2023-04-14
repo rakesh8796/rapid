@@ -1,0 +1,9 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Waight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Md Mujahid Omer,"Ama seoni swarnabhoomi, Swarnabhoomi mgm eye hospital",7869081898,492101,,Kosmos Prime 2,1,8,8,8,1549,1549,CT,Raipur,,0.102,1549,2054,,,,,,,,COD
+Aryan kumar,"Sarila, sarila jariya bus stand",8400149806,210432,,Kosmos Prime 2,1,8,8,8,1549,1549,UP,Sarila,,0.102,1549,2054,,,,,,,,COD
+Shirsendu Tapaswi,"70-2 Sisir Bagan Road Bliss Park Behala, Milan chakra club",8013563638,700034,,Kosmos Prime 2,1,8,8,8,1549,1549,WB,Kolkata,,0.102,1549,2054,,,,,,,,COD
+Basanta kr marak,"village add-Jatan Bari fir sarvice,near by- Jatan Bari to amarpur",8575688003,799104,,Kosmos Prime 2,1,8,8,8,1549,1549,TR,Jatan Bari,,0.102,1549,2054,,,,,,,,COD
+Faizankhan,"Gosiya caloni ring rod tajbag nagpur, Takashi lown",7057120199,440024,,Kosmos Prime 2,1,8,8,8,1549,1549,GA,Nagpur,,0.102,1549,2054,,,,,,,,COD
+Kaushik,"Bishnu Rabha Path, Near Haloi Store",6001141650,784001,,Kosmos Prime 2,1,8,8,8,1549,1549,NL,Tezpur,,0.102,1549,2054,,,,,,,,COD
+Mukesh,"Kandivali charkop sector 1 rudra society 138, Mumbai 400067",8355813162,400067,,Kosmos Prime 2,1,8,8,8,1549,1549,MH,Mumbai,,0.102,1549,2054,,,,,,,,COD
+sravanyadav,"h no-3-3/1,suddala sulthanabad,near by-Ambedkar stachu ,alt no-8328488876",9949992336,505185,,Kosmos Prime 2,1,8,8,8,1549,1549,TS,peddapalli,,0.102,1549,2054,,,,,,,,COD

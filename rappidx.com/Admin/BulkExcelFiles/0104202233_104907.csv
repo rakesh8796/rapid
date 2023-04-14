@@ -1,0 +1,2 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Mohan Sharma,"Post Resari Vil Resari Teh Khair, Near Sofa Nehar",7078910692,202141,#4271,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,0,UP,Aligarh,,0.205,0,4144,,,,,,,,PREPAID

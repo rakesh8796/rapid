@@ -1,0 +1,3 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Srishti Srivastava,"1270, 2nd Floor Sector 1, HSR Layout BENGALURU, KARNATAKA",9506306991,560102,RPDXSS0001,Blanket,1,36,27,62,2999,0,Karnataka,Bangalore,,12000,2999,579,,,,,,,,Prepaid
+Srishti Srivastava,"1270, 2nd Floor Sector 1, HSR Layout BENGALURU, KARNATAKA",9506306991,560102,RPDXSS0002,Clothes,1,31,27,47,2999,0,Karnataka,Bangalore,,8000,2999,579,,,,,,,,Prepaid

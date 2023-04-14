@@ -1,0 +1,4 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Waight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Divyam,"Sanjay nagar Rewa , Ho/14/312",7389670534,534447,,Pulse Oximeter,1,9,6,3,1599,1599,Jangareddygudem,Saman,,0.04,1599,,Inspirox Digital,9821264126,110051,,"133, Gagan Bihar Main Delhi, 51",Delhi,Delhi,COD
+Saurabh,"Durgasai meadical stores, Jpcenter",9948246969,560062,,Pulse Oximeter,1,9,6,3,1599,1599,Bangalore,Jangareddygudem,,0.04,1599,,Inspirox Digital,9821264126,110051,,"133, Gagan Bihar Main Delhi, 51",Delhi,Delhi,COD
+Vikas,"Durgasai meadical stores, Jpcenter",9948246966,342603,,Pulse Oximeter,1,9,6,3,1599,1599,Bhopalgarh,Jangareddygudem,,0.04,1599,,Inspirox Digital,9821264126,110051,,"133, Gagan Bihar Main Delhi, 51",Delhi,Delhi,COD

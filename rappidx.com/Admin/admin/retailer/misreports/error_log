@@ -1,0 +1,9 @@
+[24-Dec-2021 05:44:03 UTC] PHP Fatal error:  'continue' not in the 'loop' or 'switch' context in /home3/badmagwl/public_html/server10/rappidx.com/Admin/misreports/cmis.php on line 155
+[24-Dec-2021 05:50:23 UTC] PHP Fatal error:  'continue' not in the 'loop' or 'switch' context in /home3/badmagwl/public_html/server10/rappidx.com/Admin/misreports/cmis.php on line 155
+[24-Dec-2021 06:03:54 UTC] PHP Fatal error:  'continue' not in the 'loop' or 'switch' context in /home3/badmagwl/public_html/server10/rappidx.com/Admin/misreports/cmis.php on line 155
+[16-Sep-2022 23:50:42 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: mysqli_query(): Argument #1 ($mysql) must be of type mysqli, bool given in /home3/badmagwl/public_html/server10/rappidx.com/Admin/admin/retailer/Layout_Header_Folder.php:27
+Stack trace:
+#0 /home3/badmagwl/public_html/server10/rappidx.com/Admin/admin/retailer/Layout_Header_Folder.php(27): mysqli_query(false, 'SELECT * FROM `...')
+#1 /home3/badmagwl/public_html/server10/rappidx.com/Admin/admin/retailer/misreports/cmis.php(2): include('/home3/badmagwl...')
+#2 {main}
+  thrown in /home3/badmagwl/public_html/server10/rappidx.com/Admin/admin/retailer/Layout_Header_Folder.php on line 27

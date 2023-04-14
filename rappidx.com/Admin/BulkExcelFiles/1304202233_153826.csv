@@ -1,0 +1,4 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Tahir  Lone ,"H.No 92, Kursu Rajbagh, Near Pumposh Girls Hostel, Bund Road, Srinagar",6006066690,190008,#4337,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,JK,Srinagar ,,0.205,0,4144,,,,,,,,COD
+Basavaraj Bsc,"Maheshwara, Opp Bank of Baroda, Rangenahalli",7204741411,577144,#4338,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,KA,Rangenahalli,,0.205,0,4144,,,,,,,,COD
+Arif  Rahman,"Kakkavayal Old Route No NH 212, Vythiri Subdistrict, Wayanad District, Near GHSS School Road, Kerala",8606185072,673122,#4339,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,KL,Wayanad,,0.205,0,4144,,,,,,,,COD

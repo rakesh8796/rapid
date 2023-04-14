@@ -1,0 +1,312 @@
+<?php class Attendance {
+    
+
+
+    /*****************************************************************************
+    *****************************ADD GYM SERVICE**********************************
+    *****************************************************************************/
+
+    function viewBranch(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT * FROM asitfa_branch");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ ?>
+            <tr>
+                <td><?php echo $row['Branch_Id']; ?></td>
+                <td><?php echo $row['Branch_Name']; ?></td>
+                <td><?php echo $row['Branch_Address']; ?></td>
+                <td><?php echo $row['Branch_Contact']; ?></td>
+                <th></th>
+                <th class="hidden-sm hidden-md hidden-lg"></th>
+                <th class="hidden-sm hidden-md hidden-lg"></th>
+            </tr>
+            
+        <?php   
+        }
+    }    
+
+    
+
+
+    function studentAttendance(){
+        include('config/dbcon.php');
+    	$attendance = $_POST['attendance']; 
+        $studentid = $_POST['studentid']; 
+        $manualtime = $_POST['time'];
+        if ($manualtime>0) {
+            $todaydates = $manualtime;
+            $todaydate = date("Y-m-d H:m:s", strtotime($todaydate));
+        }
+        else{
+            $todaydate = Date('Y-m-d H:m:s');
+        }
+        $datetodays = Date('Y-m-d'); 
+        
+        $outtime = Date('Y-m-d H:m:s');  
+        $RecTimeStamp = Date("Y/m/d  H:m:s");
+        $size = sizeof($studentid);
+        $values="";
+        try{
+            for($i=0; $i<$size; $i++ )
+            {
+                if($size-1 == $i)
+                {
+                    $values .= "('$studentid[$i]', '1','$datetodays','$todaydate', '$outtime','$RecTimeStamp')" ;
+                }
+                else
+                {
+                    $values .= "('$studentid[$i]', '1','$datetodays','$todaydate', '$outtime','$RecTimeStamp'),";
+                }
+            }
+            $sql = "INSERT INTO asitfa_attendance ( Student_Id, Attendance_Status, Attendance_Date, Attendance_Date_Intime, Attendance_Date_Outtime, Rec_Time_Stamp) VALUES {$values}";
+            $result = mysql_query($sql) or die (mysql_error());
+            echo "<script>alert('Student Present Mark Successfully')</script>";
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+
+    function studentAttendanceOut(){
+        include('config/dbcon.php');
+        $studentid = $_POST['studentid']; 
+        $outtime = Date('Y-m-d H:m:s');  
+        $size = sizeof($studentid);
+        $values = "";
+        try{
+            for($i=0; $i<$size; $i++ )
+            {
+                if($size-1 == $i)
+                {
+                    $values .= "'$outtime'" ;
+                }
+                else
+                {
+                    $values .= "'$outtime',";
+                    
+                }
+                $sql = "UPDATE asitfa_attendance SET Attendance_Date_Outtime = NOW() WHERE Student_Id = $studentid[$i]";
+                $result = mysql_query($sql) or die (mysql_error());
+                echo "<script>alert('Student Present Mark Successfully')</script>";
+            }
+            
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    function BackAttendance(){
+        include('config/dbcon.php');
+        $attendance = $_POST['attendance']; 
+        $studentid = $_POST['studentid']; 
+        $backdate = $_POST['backdate']; 
+        $backdates = date("Y-m-d", strtotime($backdate));
+
+        $todaydate = Date('Y-m-d H:m:s');
+        $outtime = Date('Y-m-d H:m:s');  
+        $RecTimeStamp = Date("Y/m/d  H:m:s");
+        $size = sizeof($studentid);
+        $values="";
+        try{
+            for($i=0; $i<$size; $i++ )
+            {
+                if($size-1 == $i)
+                {
+                    $values .= "('$studentid[$i]','1','$backdates','$todaydate', '$outtime','$RecTimeStamp')" ;
+                }
+                else
+                {
+                    $values .= "('$studentid[$i]','1','$backdates','$todaydate', '$outtime','$RecTimeStamp'),";
+                }
+            }
+           $sql = "INSERT INTO asitfa_attendance ( Student_Id, Attendance_Status, Attendance_Date, Attendance_Date_Intime, Attendance_Date_Outtime, Rec_Time_Stamp) VALUES {$values}";
+            $result = mysql_query($sql) or die (mysql_error());
+            echo "<script>alert('Student Present Mark Successfully')</script>";
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+
+
+    function absentStudentAendance(){
+        include('config/dbcon.php');
+        include('config/dbconnection.php');
+        $attendance = $_POST['attendance']; 
+        $studentid = $_POST['studentid']; 
+        $datetodays = Date('Y-m-d'); 
+        $todaydate = Date('Y-m-d');  
+        $outtime = Date('Y-m-d H:m:s');  
+        $RecTimeStamp = Date("Y/m/d H:m:s");
+        $size = sizeof($studentid);
+        $values="";
+        try{
+            for($i=0; $i<$size; $i++ )
+            {
+                if($size-1 == $i)
+                {
+                    $values .= "('$studentid[$i]','0','$datetodays','$todaydate', '$outtime','$RecTimeStamp')" ;
+                }
+                else
+                {
+                    $values .= "('$studentid[$i]','0','$todaydate', '$outtime','$RecTimeStamp'),";
+                }
+            }
+            $sql = "INSERT INTO asitfa_attendance ( Student_Id, Attendance_Status, Attendance_Date, Attendance_Date_Intime, Attendance_Date_Outtime, Rec_Time_Stamp) VALUES {$values}";
+            $result = mysql_query($sql) or die (mysql_error());
+
+            $ids = join("','",$studentid);   
+
+            $fatehermobileno = "SELECT * FROM `asitfa_student` WHERE Student_Id IN ('$ids')";
+            $ru = mysql_query($fatehermobileno) or die(mysql_error());
+            $data = mysql_fetch_row($ru); 
+
+            $message = "Dear Parent Your Son Absent Today";
+            $fathermob = $data[7];
+            if(strlen($fathermob)== '13')
+            {
+                $a = explode("+91", $fathermob);
+                $mob = $a[1];
+            }
+            else if (strlen($fathermob)== '11')
+            {
+                $mob = preg_replace('/^0+/', $fathermob);
+            }
+            else 
+            {
+                $mob =   $fathermob;
+            }
+            if(strlen($mob) == '10')
+            {
+                $this->sms($message, $mob);
+            }
+            echo "<script>alert('Student Absent Mark Successfully')</script>";
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+
+    function presentToday(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT Attendance_Date, Student_Id, Attendance_Status FROM asitfa_attendance WHERE Attendance_Status ='1'");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $dateattend = $row['Attendance_Date'];
+            $todaydate = date("Y-m-d");
+            $studentid = $row['Student_Id'];
+            if($todaydate==$dateattend){
+                $sqlattendance = $db->prepare("SELECT Redg_No, Student_Name, Class_Id  FROM asitfa_student WHERE Student_Id = $studentid");
+                $sqlattendance->execute();
+                for($i=0; $rowstudent = $sqlattendance->fetch(); $i++){
+                    $classid = $rowstudent['Class_Id'];
+                    $sqlclass = $db->prepare("SELECT * FROM `asitfa_class` WHERE Class_Id = $classid");
+                    $sqlclass->execute();
+                    for($i=0; $rowclass = $sqlclass->fetch(); $i++){    
+                            ?>
+                            <tr class="record">   
+                                <td><?php echo $row['Student_Id']; ?></td>
+                                <td><?php echo $rowstudent['Redg_No']; ?></td>
+                                <td><?php echo $rowstudent['Student_Name']; ?></td>
+                                <td><?php echo $rowclass['Class_Name']; ?></td>
+                                <td class="hidden-lg"></td>
+                                <td class="hidden-lg"></td>
+                                <td>Present</td>
+                            </tr>    
+                            <?php
+                        }
+                } 
+            }
+        }
+    }
+
+    function absentToday(){
+        include('config/dbconnection.php');
+        $result = $db->prepare("SELECT Attendance_Date, Student_Id, Attendance_Status FROM asitfa_attendance WHERE Attendance_Status ='0'");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+            $dateattend = $row['Attendance_Date'];
+            $todaydate = date("Y-m-d");
+            $studentid = $row['Student_Id'];
+            if($todaydate==$dateattend){
+                $sqlattendance = $db->prepare("SELECT Redg_No, Student_Name, Class_Id FROM asitfa_student WHERE Student_Id = $studentid");
+                $sqlattendance->execute();
+                for($i=0; $rowstudent = $sqlattendance->fetch(); $i++){
+
+                    $classid = $rowstudent['Class_Id'];
+                    $sqlclass = $db->prepare("SELECT * FROM `asitfa_class` WHERE Class_Id = $classid");
+                    $sqlclass->execute();
+                    for($i=0; $rowclass = $sqlclass->fetch(); $i++){  
+
+                       
+                            ?>
+                            <tr class="record">   
+                                <td><?php echo $row['Student_Id']; ?></td>
+                                <td><?php echo $rowstudent['Redg_No']; ?></td>
+                                <td><?php echo $rowstudent['Student_Name']; ?></td>
+                                <td><?php echo $rowclass['Class_Name']; ?></td>
+                                <td class="hidden-lg"></td>
+                                <td class="hidden-lg"></td>
+                                <td>Absent</td>
+                            </tr>    
+                            <?php
+                    } 
+                } 
+            }
+        }
+    }
+
+
+    function sms($message,$mob)
+    {
+        
+        // $uname="ashrishait2";
+        // $pwd="IndianRailways@6784";
+        // $senderid="ASRISA";
+        //$message="Hello";
+        //$mob="9457404653";
+
+        // $data="uname=".$uname."&pass=".$pwd."&send=".$senderid."&dest=".$mob."&msg=".$message;
+        //$ch=curl_init('http://bulksms.ashrishait.com/index.php/smsapi/httpapi/?uname='.$uname.'&password='.$pwd.'&sender='.$senderid.'&receiver='.$mob.'&route=TA&msgtype=1&sms='.$message);
+        //curl_setopt($ch, CURLOPT_POST, true);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+       // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+       // $result=curl_exec($ch);
+       // curl_close($ch);
+//        if($result)
+//        {
+//                echo "Success";
+//        }
+//        else
+//        {
+//                echo "Not Sent";
+//        }
+    }
+    
+function StudentName($studentid){
+
+ include('config/dbconnection.php');
+        $result = $db->prepare("SELECT Student_Name FROM asitfa_student WHERE Student_Id =$studentid");
+        $result->execute();
+        for($i=0; $row = $result->fetch(); $i++){ 
+          echo $row['Student_Name'];
+      }
+  }
+    
+
+}
+
+
+
+
+
+
+

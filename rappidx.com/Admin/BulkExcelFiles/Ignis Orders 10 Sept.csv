@@ -1,0 +1,63 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Ajay shankar Tembhre,"town- Barghat, ward-11, near- girls high school Barghat",8770802612,480667,,Shirts Combo,1,28,28,3,649,649,MADHYA PRADESH,Seoni,,0.47,649,2077,,,,,,,,COD
+Rohan Chouhan,"vill- Parwaliya, ward-67, near- panchayat ghar, Jaora,",8463023437,457339,,Shirts Combo,1,28,28,3,649,649,MADHYA PRADESH,JAORA,,0.47,649,2077,,,,,,,,COD
+Nisar ahamed,"S.r, area- Gandhi nagar, near- PT house Challakere",9591529588,577522,,Shirts Combo,1,28,28,3,649,649,KARNATAKA,Challakere,,0.47,649,2077,,,,,,,,COD
+Dhiraj Kumar,"area- Tati tola, h.no-53, near- shiv mandir, Mushkipur",6203086937,851203,,Shirts Combo,1,28,28,3,649,649,BIHAR,MUNGER,,0.47,649,2077,,,,,,,,COD
+Shaik Rafi,"h.no- 5-14-59, Sundipenta, Kurnool",9440029092,518102,,Shirts Combo,1,28,28,3,649,649,ANDHRA PRADESH,Srisailam,,0.47,649,2077,,,,,,,,COD
+Mukesh Kumar,"vill- Kathwara, h.no-314/355, near- maa chandika devi mandir, Lucknow",8187972549,226202,,Shirts Combo,2,28,28,3,1248,1248,UTTAR PRADESH,LUCKNOW,,0.47,1248,2077,,,,,,,,COD
+Balu Ghodake,"h.no- 117, mohalla- Sutar gall umapur, near- bus stand, Beed",9766717173,431130,,Shirts Combo,1,28,28,3,649,649,MAHARASHTRA,GEVRAI,,0.47,649,2077,,,,,,,,COD
+Amit shill,"h.no- 403, area- Goalpara, near- minar masjid, ",9678994380,783120,,Shirts Combo,1,28,28,3,649,649,ASSAM,GOALPARA,,0.47,649,2077,,,,,,,,COD
+Pawan Tamta,"vill- Pochriya, area- Khatima, ward-9, near- lal kothi pull, ",7668700415,262308,,Shirts Combo,1,28,28,3,649,649,UTTARAKHAND,KHATIMA,,0.47,649,2077,,,,,,,,COD
+Lone rayees Rayees,"vill- Kalaroose, ward-2, near- rangmahal masjid, Lashtiyal, Kupwara",9149821378,193222,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,SRINAGAR -JK,,0.47,649,2077,,,,,,,,COD
+Sajeel Huzaifa,"vill- Kursi barabanki, post-Lazi, near- SBI bank, h.no-142, Kursi",7268860795,225302,,Shirts Combo,1,28,28,3,649,649,UTTAR PRADESH,Fatehpur-UP,,0.47,649,2077,,,,,,,,COD
+Rahul Singh,"vill-Chakki, near- PNB bank, Haryal, Pathankot",8558988686,145001,,Shirts Combo,1,28,28,3,649,649,PUNJAB,Pathankot,,0.47,649,2077,,,,,,,,COD
+baig sohaib,"vill- baramola, near- gurunanak school, complex- ahmed,srinagar",7006773981,193101,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,SRINAGAR,,0.47,649,2077,,,,,,,,COD
+Anas Qureshi,"near- govt high sec school, h.no-4546, area- Sanjay bazar, city- Jaipur",8949670033,302003,,Shirts Combo,1,28,28,3,649,649,RAJASTHAN,JAIPUR,,0.47,649,2077,,,,,,,,COD
+Akram Nasir,"ward-5, near- Astvinyak mandir, vill- Latur",8484804626,413512,,Shirts Combo,1,28,28,3,649,649,MAHARASHTRA,Latur,,0.47,649,2077,,,,,,,,COD
+Biplab Das,"vill-Samsi, area- Magura, near- samasti college , Malda",9932941299,732139,,Shirts Combo,1,28,28,3,649,649,WEST BENGAL,CHACHAL,,0.47,649,2077,,,,,,,,COD
+Abhishek Sharma,"city- Karond, colony- pooja, near- hanuman mandir, ward-79, h.no-136, gali-2, 26,Bhopal",7223097076,462038,,Shirts Combo,1,28,28,3,649,649,MADHYA PRADESH,Bhopal,,0.47,649,2077,,,,,,,,COD
+Manikant Singh,"vill- Kharauna, near- bypass sabji mandi, ",6203961163,844121,,Shirts Combo,1,28,28,3,649,649,BIHAR,SARAI,,0.47,649,2077,,,,,,,,COD
+Vinod Kumar,"vill- Rampur, near- govt rampur college, ",9805208397,172001,,Shirts Combo,1,28,28,3,649,649,HIMACHAL PRADESH,RAMPUR HP,,0.47,649,2077,,,,,,,,COD
+farhad  Khan,"vill- Handwara , near- devi college handwara, Kupwara",8899898165,193221,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,HANDWARA,,0.47,649,2077,,,,,,,,COD
+Bikram Jit,"vill- Hukran, near- govt rajkiya hukran school,  Hoshiarpur",7087614982,146112,,Shirts Combo,1,28,28,3,649,649,PUNJAB,Hoshiarpur,,0.47,649,2077,,,,,,,,COD
+rahul sharma sharma,"vill- rabta, near- govt high rabta high school, keari, Akhnoor",7780800187,181122,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,Akhnoor,,0.47,649,2077,,,,,,,,COD
+Arpan Dobriyal,"area- landsdown, near- gramin bank, h.no-101, Gahar, Gumkhak, city- Gumkhal",7535051436,246172,,Shirts Combo,1,28,28,3,649,649,UTTARAKHAND,Satpuli,,0.47,649,2077,,,,,,,,COD
+Vipin Kumar,"h.no- 546, colony- Sector 25, city- Chandigarh, near- crmeneesion ground, ",7973644748,160014,,Shirts Combo,1,28,28,3,649,649,CHANDIGARH,CHANDIGARH,,0.47,649,2077,,,,,,,,COD
+Wasim Akram,"vill- Bhuiya chitro, near- ucchh madhyamik vidyalaya, ",9136188643,828401,,Shirts Combo,1,28,28,3,649,649,JHARKHAND,DHANBAD,,0.47,649,2077,,,,,,,,COD
+Soumya Ranjan Nayak,"near- indian petrol pump, area- dich pulli, Petrol Pump, vill- Pipili, ",9090719981,752104,,Shirts Combo,1,28,28,3,649,649,ORISSA,BHUBANESWAR,,0.47,649,2077,,,,,,,,COD
+Arun Singh,"vill- Vaduj, near- shivaji school, Satara",6387569568,415506,,Shirts Combo,1,28,28,3,649,649,MAHARASHTRA,VADUJ,,0.47,649,2077,,,,,,,,COD
+deepak nager,"vill- Nindana, near- SBI bank , h.no-1147, ",9138308040,124513,,Shirts Combo,1,28,28,3,649,649,HARYANA,MEHAM,,0.47,649,2077,,,,,,,,COD
+Hitesh Rohilla,"vill- Gothra, ward-6, Kishangarh, Alwar",6377792634,301405,,Shirts Combo,1,28,28,3,649,649,RAJASTHAN,KHERTAL,,0.47,649,2077,,,,,,,,COD
+Chotu Kachhap,"vill- Tupudana, near - bonbossco govt school, Ranchi",6299158762,834004,,Shirts Combo,1,28,28,3,649,649,JHARKHAND,Ranchi,,0.47,649,2077,,,,,,,,COD
+Lakhan  Singh ,"city- Siker, near- bus depot, colony- Circuit house,Sikar",8890346268,332001,,Shirts Combo,1,28,28,3,649,649,RAJASTHAN,Sikar,,0.47,649,2077,,,,,,,,COD
+Altaf ah khan," city- Kupwara, near- punjab national bank, mohalla- mihar, ward-2, ",8493900219,193222,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,SRINAGAR -JK,,0.47,649,2077,,,,,,,,COD
+Sohel  rana,"vill- Tekona, near- suvastipura high school, Tekona",8436735223,742166,,Shirts Combo,1,28,28,3,649,649,WEST BENGAL,Hariharpara,,0.47,649,2077,,,,,,,,COD
+Suraj Negi,"vill- bsoli, near- Nanda devi inter college,",7668613015,263601,,Shirts Combo,1,28,28,3,649,649,UTTARAKHAND,Almora,,0.47,649,2077,,,,,,,,COD
+Karan Singh,"near- JMIT college,  and   Boys hostel, city- Radaur",7206060517,135133,,Shirts Combo,1,28,28,3,649,649,HARYANA,Yamunanagar,,0.47,649,2077,,,,,,,,COD
+Parvez Butt,"near- ramleela ground, ward-3, Billawar, vill-Dadwara,Kathuua",9541421984,184203,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,MANPUR,,0.47,649,2077,,,,,,,,COD
+Money Singla,"vill- Maur mandi, near- govt hospital, ward-15, ",9877714120,151509,,Shirts Combo,1,28,28,3,649,649,PUNJAB,MANSA,,0.47,649,2077,,,,,,,,COD
+Sameer Chettri,"city- Ranipool, area- nangog, near- tersai sen sec school, ward-1, ",8617840667,737102,,Shirts Combo,1,28,28,3,649,649,SIKKIM,GANGTOK,,0.47,649,2077,,,,,,,,COD
+Humza Rehman,"vill- gondihad, near- ibrahim masjid, h.no-3, Shopian, H,Shopian",6005487884,192303,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,SRINAGAR -JK,,0.47,649,2077,,,,,,,,COD
+adarsh .,"city- gaya, area- new godown rajendra path, ward-18, near- dhoopbatti factory, ",8252031215,823002,,Shirts Combo,1,28,28,3,649,649,BIHAR,Gaya,,0.47,649,2077,,,,,,,,COD
+Subham Ghosh,"vill- Bamungola, near- durga mandir, Malda, block- Bamangola",6296864845,732138,,Shirts Combo,1,28,28,3,649,649,WEST BENGAL,Bamangola,,0.47,649,2077,,,,,,,,COD
+Dev Nagar,"h.no- 6/124, area- Transport nagar , city- Alwar, near- tempo stand, ",9810546751,301001,,Shirts Combo,1,28,28,3,649,649,RAJASTHAN,Alwar,,0.47,649,2077,,,,,,,,COD
+krishna mali,"vill- Ap kallol, near- govt school, mohalla- mali galli,kallol",7022770684,591244,,Shirts Combo,1,28,28,3,649,649,KARNATAKA,ANKALI,,0.47,649,2077,,,,,,,,COD
+Amal Pn,"near- shiv temple, ward-12, h.no-160, Ezhamile, vill- Kolapra",6238156015,685590,,Shirts Combo,1,28,28,3,649,649,KERALA,Thodupuzha,,0.47,649,2077,,,,,,,,COD
+Sumit Kumar,"ward-8, near- union bank, city- Bikram",6203163010,801104,,Shirts Combo,1,28,28,3,649,649,BIHAR,Bihta,,0.47,649,2077,,,,,,,,COD
+shubham sharma,"vill- basera, near- SBI bank, ward-7, muzaffar nagar ",7668326417,251310,,Shirts Combo,1,28,28,3,649,649,UTTAR PRADESH,MUZAFFARNAGAR,,0.47,649,2077,,,,,,,,COD
+Ayan Kumar,"city- Sathopur nagar, near- Power brij, area- sarvodya nagar,  Bihar",7808795830,803101,,Shirts Combo,1,28,28,3,649,649,BIHAR,BIHARSHARIF,,0.47,649,2077,,,,,,,,COD
+Ranjeet roy,"area- Giriza, near- sai baba temple, city- Kolkata",7903784084,700115,,Shirts Combo,1,28,28,3,649,649,WEST BENGAL,Barrackpore,,0.47,649,2077,,,,,,,,COD
+Tanmoy dan,"vill-Gangajal ghati, near- gangajal ghati school, Bankura",7548926293,722133,,Shirts Combo,1,28,28,3,649,649,WEST BENGAL,Bankura,,0.47,649,2077,,,,,,,,COD
+Harsh Thakur,"vill- bakhalag, ward-63, near- polytechnic college, Himachal Pradesh, Solan,Arki",8544754988,173208,,Shirts Combo,1,28,28,3,649,649,HIMACHAL PRADESH,DARLAGHAT,,0.47,649,2077,,,,,,,,COD
+rijul ramchaik,"area- forest colony, near- chhota Shimla, town- Khilini, ",8219546580,171002,,Shirts Combo,1,28,28,3,649,649,HIMACHAL PRADESH,Shimla,,0.47,649,2077,,,,,,,,COD
+vicky singh,"vill- Sahejani, ward-13, near- govt school, ",9304610513,802204,,Shirts Combo,1,28,28,3,649,649,BIHAR,BIKRAMGANJ,,0.47,649,2077,,,,,,,,COD
+Sabuj Majumder,"near- hotel Savli dhava, vill- Nanded vata,Pune",7596996462,411041,,Shirts Combo,1,28,28,3,649,649,MAHARASHTRA,PUNE,,0.47,649,2077,,,,,,,,COD
+BipinSingh  Bipin,"vill- Mali,  ward-6, near- devi mandir, Aurangabad ",7301898155,824102,,Shirts Combo,1,28,28,3,649,649,BIHAR,BAJULI,,0.47,649,2077,,,,,,,,COD
+Shivalik Guleria,"vill- Sunehat, near- main bajar, Badhuin,Dehra",8278724475,177104,,Shirts Combo,1,28,28,3,649,649,HIMACHAL PRADESH,DEHRA,,0.47,649,2077,,,,,,,,COD
+Jigar Patel,"vill- Vaghaldhara, near- ayurvedic college, Dharedi, Valsad",7990423667,396375,,Shirts Combo,1,28,28,3,649,649,GUJARAT,Valsad,,0.47,649,2077,,,,,,,,COD
+Majnu Nayak,"area- Perkit, city- Armoor, near- amulaya hospital, ",9573853196,503224,,Shirts Combo,1,28,28,3,649,649,TELANGANA,Armoor,,0.47,649,2077,,,,,,,,COD
+Vikas Vicky,"area- dafwali road,  near- Aroma Hotel, city- Sirsa",9017836663,125055,,Shirts Combo,1,28,28,3,649,649,HARYANA,Sirsa,,0.47,649,2077,,,,,,,,COD
+Thinglhangpao Kuki,"vill- simos, h.no-7, near- church Imphal",7085344371,795001,,Shirts Combo,1,28,28,3,649,649,MANIPUR,Imphal,,0.47,649,2077,,,,,,,,COD
+Saikat Sarkar,"town- Palpara purba, near- Palpara purba railway station, Nadia",7076140642,741222,,Shirts Combo,1,28,28,3,649,649,WEST BENGAL,KALYANI,,0.47,649,2077,,,,,,,,COD
+Saleem Khan,"vill- shastrigarh, ward-8, h.no-56, near- degree college GTC doda, Doda",9149698260,182202,,Shirts Combo,1,28,28,3,649,649,JAMMU AND KASHMIR,Doda,,0.47,649,2077,,,,,,,,COD
+Mukesh Kumar,"vill- Dhalpur, Kullu college, near- SBI bank, Kullu",9805835737,175101,,Shirts Combo,1,28,28,3,649,649,HIMACHAL PRADESH,BHUNTER,,0.47,649,2077,,,,,,,,COD

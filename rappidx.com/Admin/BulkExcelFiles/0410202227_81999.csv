@@ -1,0 +1,4 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Dibakar Pokhrel,"Madhupur, Near florence academy, Biswanath Chariali, District- Biswanath",9394417514,784176,,Electronics,1,10,8,12,2000,0,Assam,Biswanath,,0.25,2000,4606,,,,,,,,Prepaid
+Aryan,"18-79/F4, PRASHANTI ENCLAVE, M.E.S Colony, Venkatapuram",6309352380_,500010,,Electronics,1,10,8,12,2000,0,Hyderabad,Telangana,,0.25,2000,4606,,,,,,,,Prepaid
+TAHA TANWEER,"F710, Indra Vihar, Near New Punjabi Mess, Talwandi",7292075671,324005,,Electronics,1,10,8,12,2000,0,Rajasthan,Kota,,0.25,2000,4606,,,,,,,,Prepaid

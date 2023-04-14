@@ -1,0 +1,8 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Anihar Marak,"H.No 146, Lerie colony , Near St. Merry School",7005302859    ,797005,#4280,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,NL,KOHIMA ,,0.205,0,4144,,,,,,,,COD
+Mahesh Raut,"H.NO 11, Magadh singh chowk, Mangrul Dastagir, Near Bhamanga Railway",9960525135    ,444711,#4283,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,MH,Mangrul Dastagir,,0.205,0,4144,,,,,,,,COD
+Jomon  Abraham ,"Kalloor House, Post Mevida, Pala, Near St. Merry Church ",7510781263    ,686573,#4287,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,KL,Kottayam ,,0.205,0,4144,,,,,,,,COD
+Rituraj Moran,"SURJYA AUTOMOBILE, Pengeri-Bordumsa Road, Near Bordumsa Police Station",9365077336    ,786174,#4290,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AS,Bordumsa,,0.205,0,4144,,,,,,,,COD
+Shrishailmallikarjunganachari Mallu,"Vill. Alur, Taluka Muddebihal, Near KVP Bank, Vijayapura",9353669034    ,586129,#4270,Luminated Car Stripe Light (All cars),1,10,8.5,7,1049,1049,KA,Vijayapura,,0.205,0,4144,,,,,,,,COD
+Sunil Hijam,"Lairenjam Awang, Phc Mekola, Near Hospital, Imphal",8132039409    ,795140,#4272,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,MN,Imphal,,0.205,0,4144,,,,,,,,COD
+Rahul Thakur,"H.NO 1, Vill. Jari, Near Petro Pump, Kullu",9805525608    ,175105,#25222670942342,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,HP,Jari,,0.205,0,4144,,,,,,,,COD

@@ -1,0 +1,4 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Sujay Kumar,"rajepur district matihari
+",9366608413,845406,,Smartwatch,1,10,5,5,1399,1399,BR,Rajepur,,0.05,1399,3162,,,,,,,,COD
+Ad.Akhilesh NagliyA,ashta mugli ,8718993116,466116,,Smartwatch,1,10,5,5,1399,1399,MP,Ashta,,0.05,1399,3162,,,,,,,,COD

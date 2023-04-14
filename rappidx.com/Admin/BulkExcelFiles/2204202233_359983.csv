@@ -1,0 +1,4 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Nandlal Dixena,"H.No 51, Shiv Mandir, Pali, Korba, Chhattisgarh Shanti Nagar Road",9300920116,495449,#4362,Luminated Car Stripe Light (All cars),1,10,8.5,7,1049,1049,CG,Korba,,0.205,0,4144,,,,,,,,COD
+Shodanram Ram,"H.No 16, Sodan, Megwalo ka Mohalla, Near Baba Ramdev ji Mandir,Vill. Lalanakhurd",6375110239,341501,#25444141006982,Luminated Car Stripe Light (All cars),1,10,8.5,7,1049,1049,RJ,Makarana,,0.205,0,4144,,,,,,,,COD
+Dilowar Hussain,"Bairukpur Area, Kalain, Near LP School, Silchar",9854819141,788815,#4376,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AS,Silchar,,0.205,0,4144,,,,,,,,COD

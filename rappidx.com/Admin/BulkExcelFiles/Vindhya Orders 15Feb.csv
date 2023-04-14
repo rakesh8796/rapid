@@ -1,0 +1,7 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+GM Balaji,"18, Anna Nagar, Poovam, Near Mariyannam Temple,  Karikal",9361103475,609609,#4232,Luminated Car Stripe Light (All cars),1,22,4,18,999,999,PY,Karikkal,,0.4,999,4144,,,,,,,,COD
+Akash Shindhe,"H.No 123, Vidyanagar, Hunagund, Near Stadium",9739541143,587118,#4233,Luminated Car Stripe Light (All cars),1,22,4,18,999,999,KA,Hungund,,0.4,999,4144,,,,,,,,COD
+Sanjay Chauhan,"Rama Health Clinic, Lower Chakkar Kachi Ghatti, Shimla",7988465562,171001,#4234,Luminated Car Stripe Light (All cars),1,22,4,18,999,999,HP,Shimla,,0.4,999,4144,,,,,,,,COD
+Sahoo Krishna,"H.NO 122, Cuttack Choudwar,",7978742225,754071,#24495546826886,Luminated Car Stripe Light (All cars),1,22,4,18,999,999,OR,Cuttack,,0.4,999,4144,,,,,,,,COD
+Kalam Uddin,"H.NO 210, Vill. Pilagaon, Post. duhalia, Anipur Road,  Asimganj Market, Near 139 Long Turbogool LP School",7099752081,788724,#24510596776070,Luminated Car Stripe Light (All cars),1,22,4,18,999,999,AS,Patharkandi,,0.4,999,4144,,,,,,,,COD
+Imran Mallick,"Uttarganipur, Chakmir, Mallick para, Near Yuva Friends club, Maheshtala",8013717386,700141,#24473612550278,Luminated Car Stripe Light (All cars),1,22,4,18,999,999,WB,Maheshtala,,0.4,999,4144,,,,,,,,COD

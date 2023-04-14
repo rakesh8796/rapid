@@ -1,0 +1,4 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Upender Nani,Bejjanki,9052559548    ,505528,,Latest I-Watch Air Pods Pro Combo,1,20,15,8,1649,1649,TS,Bejjanki,,0.205,1649,4136,,,,,,,,COD
+Masuk maumder,near by Jaamamasjid,7002954386    ,788013,,Smart Watch Series 6 with Air Pods Pro,1,20,15,8,1649,1649,AS,Silchar,,0.205,1649,4136,,,,,,,,COD
+Gulshan Tripura,near by police station,9366239749    ,799273,,Smart Watch Series 6 with Air Pods Pro,1,20,15,8,1649,1649,TR,Manikpur,,0.205,1649,4136,,,,,,,,COD

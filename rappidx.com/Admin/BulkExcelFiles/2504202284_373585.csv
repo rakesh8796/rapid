@@ -1,0 +1,6 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Mr Sanket,"M-005, FIRST FLOOR,PLOT NO-T-5  T-4A,IBB-2,SHAHED PATH,SUSHANT GOLF CITY,SULTANPUR ROAD,LUCKNOW",8826454197,226030,Deg001,Mat,1,23,22,20,40000,0,UP,LUCKNOW,,2,0,4524,Degardenia,,,,,,,Prepaid
+Mr Sanket,"M-005, FIRST FLOOR,PLOT NO-T-5  T-4A,IBB-2,SHAHED PATH,SUSHANT GOLF CITY,SULTANPUR ROAD,LUCKNOW",8826454197,226030,Deg002,Mat,1,23,22,20,40000,0,UP,LUCKNOW,,2,0,4524,Degardenia,,,,,,,Prepaid
+Mr Sanket,"M-005, FIRST FLOOR,PLOT NO-T-5  T-4A,IBB-2,SHAHED PATH,SUSHANT GOLF CITY,SULTANPUR ROAD,LUCKNOW",8826454197,226030,Deg003,Mat,1,23,22,20,40000,0,UP,LUCKNOW,,2,0,4524,Degardenia,,,,,,,Prepaid
+Mr Sanket,"M-005, FIRST FLOOR,PLOT NO-T-5  T-4A,IBB-2,SHAHED PATH,SUSHANT GOLF CITY,SULTANPUR ROAD,LUCKNOW",8826454197,226030,Deg004,Mat,1,23,22,20,40000,0,UP,LUCKNOW,,2,0,4524,Degardenia,,,,,,,Prepaid
+Mr Sanket,"M-005, FIRST FLOOR,PLOT NO-T-5  T-4A,IBB-2,SHAHED PATH,SUSHANT GOLF CITY,SULTANPUR ROAD,LUCKNOW",8826454197,226030,Deg005,Mat,1,23,22,20,40000,0,UP,LUCKNOW,,2,0,4524,Degardenia,,,,,,,Prepaid

@@ -1,0 +1,3 @@
+Customer Name,Address,Mobile,Pincode,Order ID,Item,Quantity,Width,Height,Length,Invoice Value,COD Amount if not Enter 0,State,City,"Additional Details(dangures Goods, Extra Care)",Weight,Total Amount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Srishti Srivastava,"1270, 2nd Floor, 22nd Main, 13th Cross, HSR 1st Sector, Opp. Cambridge Public School",9506306991,560102,,Clothes,1,24,21,31,10000,0,Karnataka,Bangalore,,3100,10000,579,,,,,,,,Prepaid
+Srishti Srivastava,"1270, 2nd Floor, 22nd Main, 13th Cross, HSR 1st Sector, Opp. Cambridge Public School",9506306991,560102,,Utensils,1,42,31,21,20000,0,Karnataka,Bangalore,,5470,20000,579,,,,,,,,Prepaid

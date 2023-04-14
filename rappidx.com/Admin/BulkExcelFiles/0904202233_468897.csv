@@ -1,0 +1,8 @@
+CustomerName,Address,Mobile,Pincode,OrderID,Item,Quantity,Width,Height,Length,InvoiceValue,CODAmountifnotEnter0,State,City,"AdditionalDetails(danguresGoods,ExtraCare)",Weight,TotalAmount,pickup_id,pickup_name,pickup_mobile,pickup_pincode,pickup_gstin,pickup_address,pickup_state,pickup_city,Order_Type
+Najmol Hussain,"Amraghat Bridge, Near Punjab National Bank ",9085270946,788116,#4322,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AS,Dharmikhal Grant,,0.205,0,4144,,,,,,,,COD
+Digvijay Singh Chouhan,"H. No 1, Vasundhra Vihar Colony, Mulla Ganesh Road, Near Mulla Ganesh Mandir, Dungarpur",9265643818,314001,#4324,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,RJ,Dungarpur,,0.205,0,4144,,,,,,,,COD
+Shafi Magray,"H. No 47, Iqbal Colony, Badshah Nagar, Nati pora, Near Aziz Complex ",7889961377,190015,#4327,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,JK,Srinagar,,0.205,0,4144,,,,,,,,COD
+Nakksh Gautam,"H.No 121, Near RSEB Office, Tehsil Atru, Dist. Baran ",7740856628,325218,#4313,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,RJ,Atru,,0.205,0,4144,,,,,,,,COD
+Rajbaba Ahmed,"H.No 28, Vill. Rabhapara, P.S Matia, Post Chakla, Dist. Goalpara, Assam, Near Rabhapara Masjid",6000030645,783125,#4315,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AS,MATIA,,0.205,0,4144,,,,,,,,COD
+Pavan Ghatti,"Ron, Shivpete 6th Cross Road, Near Ronamma Temple",9108232388,582209,#4318,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,KA,Gadag,,0.205,0,4144,,,,,,,,COD
+Sarchelan Engleng,"Bakalia Town, Vill. Sikari Gate Hidibonglong, Near Sikarigate Dhaba, Near NH-36",8011557796,782482,#4321,Luminated Car Stripe Light (All cars),1,10,8.5,7,999,999,AS,Diphu,,0.205,0,4144,,,,,,,,COD
